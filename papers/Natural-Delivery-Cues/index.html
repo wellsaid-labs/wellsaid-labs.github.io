@@ -51,8 +51,8 @@
         Despite recent progress in generative speech modeling, generating high-quality, diverse samples from complex datasets remains an elusive goal. 
         This work introduces a novel generative model combining state-of-the-art neural text-to-speech (TTS) and contextual annotations. 
         We learn a separate mapping network that accepts any manner of supervised annotations for controlling the generator, allowing for scale-specific 
-        modulation and interpolation operations such as pitch, loudness, and tempo adjustments. Such a setup ensures that our annotations are consistent, 
-        interpretable, and context-aware. Audio samples are available below. The model is available on <a href="https://wellsaidlabs.com/">wellsaidlabs.com.</a>
+        modulation and interpolation operations such as loudness, tempo, and pitch adjustments. Such a setup ensures that our annotations are consistent, 
+        interpretable, and context-aware. Audio samples are available below. The model is available on <a href="https://wellsaidlabs.com/">wellsaidlabs.com</a>.
 
       </p>
     </div>
@@ -102,6 +102,7 @@
           speaker using the same sample script.
           </p>
 
+<!--Sample set code block start-->
           <p><b>Sample set 1</b></p>
           <p>Speaker: Ben D.</p>
           <p>Style: Narration</p>
@@ -192,7 +193,9 @@ selecting your answers.</code>
           </tbody>
         </table>
       </div>
+<!--Sample set code block end-->
 
+<!--Sample set code block start-->
       <p><b>Sample set 2</b></p>
       <p>Speaker: Terra G.</p>
       <p>Style: Narration</p>
@@ -313,6 +316,267 @@ value=&quot;2&quot;&gt;an HCS container label&lt;/loudness&gt;&lt;/tempo&gt;.</c
       </tbody>
     </table>
   </div>
+  <!--Sample set code block end-->
+
+  <!--Sample set code block start-->
+  <p><b>Sample set 3</b></p>
+  <p>Speaker: Alan T.</p>
+  <p>Style: Narration</p>
+  <p>Source speaker language & location: English, United Kingdom</p>
+
+<div class="container pt-3 table-responsive">
+<table class="table align-middle">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Descriptor</th>
+      <th>Text Input</th>
+      <th>Audio Output</th>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>3A</td>
+      <td>No annotations</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+A large rose-tree stood near the entrance of the garden: the roses 
+growing on it were white, but there were three gardeners at it, 
+busily painting them red.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3B</td>
+      <td>Faster</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;2.5&quot;&gt;A large rose-tree stood near the entrance of the 
+garden: the roses growing on it were white, but there were three 
+gardeners at it, busily painting them red&lt;/tempo&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+          <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+          Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3C</td>
+      <td>Slower</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;0.7&quot;&gt;A large rose-tree stood near the entrance of the 
+garden: the roses growing on it were white, but there were three 
+gardeners at it, busily painting them red&lt;/tempo&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>           
+    <tr>
+      <td>3D</td>
+      <td>Quieter</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;loudness value=&quot;-20&quot;&gt;A large rose-tree stood near the entrance of 
+the garden: the roses growing on it were white, but there were 
+three gardeners at it, busily painting them red&lt;/loudness&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Louder</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;loudness value=&quot;10&quot;&gt;A large rose-tree stood near the entrance of 
+the garden: the roses growing on it were white, but there were 
+three gardeners at it, busily painting them red&lt;/loudness&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>Louder and Faster</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;1.9&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;A large rose-tree stood near 
+the entrance of the garden: the roses growing on it were white, but 
+there were three gardeners at it, busily painting them 
+red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3G</td>
+      <td>Louder and Slower</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;A large rose-tree stood near 
+the entrance of the garden: the roses growing on it were white, but 
+there were three gardeners at it, busily painting them 
+red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3H</td>
+      <td>Slower and Quieter</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-8&quot;&gt;A large rose-tree stood 
+near the entrance of the garden: the roses growing on it were 
+white, but there were three gardeners at it, busily painting them 
+red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>3I</td>
+      <td>Quieter and Faster</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;1.9&quot;&gt;&lt;loudness value=&quot;-8&quot;&gt;A large rose-tree stood 
+near the entrance of the garden: the roses growing on it were 
+white, but there were three gardeners at it, busily painting them 
+red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<!--Sample set code block end-->
+
+<!--Sample set code block start-->
+<p><b>Sample set 4</b></p>
+<p>Speaker: Jordan T.</p>
+<p>Style: Narration</p>
+<p>Source speaker language & location: English, United States</p>
+
+<div class="container pt-3 table-responsive">
+<table class="table align-middle">
+<thead>
+  <tr>
+    <th></th>
+    <th>Descriptor</th>
+    <th>Text Input</th>
+    <th>Audio Output</th>
+  </tr>
+</thead> 
+<tbody>
+  <tr>
+    <td>4A</td>
+    <td>No annotations</td>
+    <td>
+      <pre>
+        <code class="language-xml">
+I didn’t say you were wrong.</code>
+      </pre>
+    </td>
+    <td>
+      <audio controls>
+      <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+      Your browser does not support the audio tag.
+      </audio>
+    </td>
+  </tr>
+  <tr>
+    <td>4B</td>
+    <td>Casual, off-hand effect</td>
+    <td>
+      <pre>
+        <code class="language-xml">
+&lt;tempo value=&quot;2.2&quot;&gt;&lt;loudness value=&quot;8&quot;&gt;I didn&#039;t say you were 
+wrong&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+      </pre>
+    </td>
+    <td>
+      <audio controls>
+        <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+      </audio>
+    </td>
+  </tr>
+  <tr>
+    <td>4C</td>
+    <td>Measured, emotive effect</td>
+    <td>
+      <pre>
+        <code class="language-xml">
+&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-12&quot;&gt;I didn&#039;t say you were 
+wrong&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+      </pre>
+    </td>
+    <td>
+      <audio controls>
+      <source src="https://wellsaidlabs.com/wp-content/uploads/2023/10/THIS-IB-3.mp3" type="audio/mp3">
+      Your browser does not support the audio tag.
+      </audio>
+    </td>
+  </tr>           
+</tbody>
+</table>
+</div>
+<!--Sample set code block end-->
 
       <div class="container pt-3 table-responsive">
         <table
