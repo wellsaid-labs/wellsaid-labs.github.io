@@ -105,7 +105,6 @@
             In a novel approach, we use annotations alone to successfully guide the model into comprehensive possible points in the solution space for a single target
           speaker using the same sample script.
           </p>
-          <br />
 
 <!--Sample set code block start-->
           <p><b>Sample set 1</b>
@@ -586,12 +585,12 @@ wrong&lt;/loudness&gt;&lt;/tempo&gt;.</code>
 </table>
 </div>
 <!--Sample set code block end-->
-
+<br />
+<br />
       <h5>Input Variability<a id="header2"></a></h5>
           <p>
             The model responds intuitively to a variety of inputs: various cue and text lengths, various annotation combinations, and various nesting patterns.
           </p>
-          <br />
 
 
 <!--variation 2 Sample set code block start-->
@@ -789,7 +788,173 @@ tax deductible!</code>
 </table>
 <br />
 </div>
+<br />
+<br />
+      <h5>Pronunciation Sensitivity to Annotations<a id="header2"></a></h5>
+          <p>
+            The model learns annotations in context, such that pronunciation and enunciation are impacted by cues.
+          </p>
 
+<!--variation 2 Sample set code block start-->
+          <p><b>Sample set 6</b>
+            <br/>Speaker: Damian P.
+            <br/>Style: Promo
+            <br/>Source speaker language & location: English, Canada
+          </p>
+  
+      <div class="container pt-3 table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Descriptor</th>
+              <th>Text Input</th>
+              <th>Audio Output</th>
+            </tr>
+          </thead> 
+          <tbody>
+            <tr>
+              <td>6A</td>
+              <td>Extreme slow cue impacts word-level prosody</td>
+              <td>
+                <pre>
+                  <code class="language-xml">
+Recent evidence suggests that the mammalian brain may avoid 
+&lt;loudness value=&quot;30&quot;&gt;&lt;tempo value=&quot;0.6&quot;&gt;catastrophic 
+forgetting&lt;/tempo&gt;&lt;/loudness&gt; by protecting previously acquired 
+knowledge in neocortical circuits.</code>
+                </pre>
+              </td>
+              <td>
+                <audio controls>
+                <source src="Audio/6a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+                </audio>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+      </div>
+      <p>Speaker: Fiona H.
+        <br/>Style: Narration
+        <br/>Source speaker language & location: English, United Kingdom
+      </p>
+      <div class="container pt-3 table-responsive">
+      <table class="table align-middle">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Descriptor</th>
+          <th>Text Input</th>
+          <th>Audio Output</th>
+        </tr>
+      </thead> 
+      <tbody>
+        <tr>
+          <td>6B</td>
+          <td>Extreme slow cue prompts word spelling</td>
+          <td>
+            <pre>
+              <code class="language-xml">
+What happens if I slow down the word &lt;tempo value=0&quot;.2&quot;&gt;umbrella
+&lt;/tempo&gt; in this sentence?</code>
+            </pre>
+          </td>
+          <td>
+            <audio controls>
+            <source src="Audio/6b.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+            </audio>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+    <br />
+  </div>
+  <p>Speaker: Se’Von M.
+    <br/>Style: Narration
+    <br/>Source speaker language & location: English, United States
+  </p>
+  <div class="container pt-3 table-responsive">
+  <table class="table align-middle">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Descriptor</th>
+      <th>Text Input</th>
+      <th>Audio Output</th>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>6C</td>
+      <td>Not annotated</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+do</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="Audio/6c.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>6D</td>
+      <td>Extreme slow cue prompts word spelling</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;0.3&quot;&gt;do&lt;/tempo&gt;</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="Audio/6d.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>6E</td>
+      <td>Not annotated</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+all</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="Audio/6e.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <td>6F</td>
+      <td>Extreme slow cue prompts word spelling</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+&lt;tempo value=&quot;0.26&quot;&gt;all&lt;/tempo&gt;</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="Audio/6f.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+<br />
+</div>
       <div class="container pt-3 table-responsive">
         <table
           class="table table-hover"
@@ -970,8 +1135,8 @@ tax deductible!</code>
       </ul>
       <ul class="list-inline">
         <li class="list-inline-item"><dl><dt id="note2">2</dt></li>
-          <li class="list-inline-item"><dd> A Style-Based Generator Architecture for Generative Adversarial Networks
-            <a href="https://arxiv.org/abs/1812.04948">arxiv.org/abs/1812.04948</a>(<a href="#ref2">Back to text</a>)</dd></li>
+          <li class="list-inline-item"><dd>A Style-Based Generator Architecture for Generative Adversarial Networks
+            <a href="https://arxiv.org/abs/1812.04948">arxiv.org/abs/1812.04948</a> (<a href="#ref2">Back to text</a>)</dd></li>
         </dl>
       </ul>
     </div>
