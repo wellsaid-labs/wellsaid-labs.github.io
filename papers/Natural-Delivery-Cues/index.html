@@ -101,6 +101,11 @@
             In a novel approach, we use annotations alone to successfully guide the model into comprehensive possible points in the solution space for a single target
           speaker using the same sample script.
           </p>
+
+          <p><b>Sample set 1</b></p>
+          <p>Speaker: Ben D.</p>
+          <p>Style: Narration</p>
+          <p>Source speaker language & location: English, South Africa</p>
   
       <div class="container pt-3 table-responsive">
         <table class="table align-middle">
@@ -152,8 +157,10 @@ read the questions carefully&lt;/tempo&gt; before selecting your answers</code>
               <td>Activity name made louder and slower</td>
               <td>
                 <pre>
-                  <code class="language-xml"><div class="badge badge-primary text-wrap" style="width: 6rem;">
-Time for a quick &lt;tempo value=&quot;0.5&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;Knowledge Check&lt;/loudness&gt;&lt;/tempo&gt;! Please read the questions carefully before selecting your answers.</div></code>
+                  <code class="language-xml">
+Time for a quick &lt;tempo value=&quot;0.5&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;
+Knowledge Check&lt;/loudness&gt;&lt;/tempo&gt;! Please read the questions carefully before 
+selecting your answers.</code>
                 </pre>
               </td>
               <td>
@@ -164,12 +171,14 @@ Time for a quick &lt;tempo value=&quot;0.5&quot;&gt;&lt;loudness value=&quot;6&q
               </td>
             </tr>           <tr>
               <td>1D</td>
-              <td>No annotations</td>
+              <td>Activity description made louder, user actions made slower and louder</td>
               <td>
                 <pre>
                   <code class="language-xml">
-Time for a quick Knowledge Check! Please read the questions 
-carefully before selecting your answers.</code>
+Time &lt;loudness value=&quot;8&quot;&gt;for a quick Knowledge Check&lt;/loudness&gt;! 
+Please &lt;tempo value=&quot;0.5&quot;&gt;read the questions carefully&lt;/tempo&gt; &lt;tempo 
+value=&quot;0.6&quot;&gt;&lt;loudness value=&quot;10&quot;&gt;before&lt;/loudness&gt;&lt;/tempo&gt; 
+selecting your answers.</code>
                 </pre>
               </td>
               <td>
@@ -182,6 +191,8 @@ carefully before selecting your answers.</code>
           </tbody>
         </table>
       </div>
+
+
 
       <div class="container pt-3 table-responsive">
         <table
