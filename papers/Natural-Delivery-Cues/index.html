@@ -52,7 +52,7 @@
         Despite recent progress in generative speech modeling, generating high-quality, diverse samples from complex datasets remains an elusive goal. 
         This work introduces a novel generative model combining state-of-the-art neural text-to-speech (TTS) and contextual annotations. 
         We learn a separate mapping network that accepts any manner of supervised annotations for controlling the generator, allowing for scale-specific 
-        modulation and interpolation operations such as loudness, tempo, and pitch adjustments. Such a setup ensures that our annotations are consistent, 
+        modulation and interpolation operations such as loudness and tempo adjustments. Such a setup ensures that our annotations are consistent, 
         interpretable, and context-aware. Audio samples are available below. The model is available on <a href="https://wellsaidlabs.com/">wellsaidlabs.com</a>.
       </p>
     </div>
@@ -1993,11 +1993,12 @@ during those first few hours</code>
 <div class="container shadow p-5 mb-5 bg-white rounded">
   <h3>Future State<a id="future"/></h3>
   <p>
-    We have shown that the annotation mapping network allows for crafting dynamic and engaging voice over. The network generalizes 
+    We have shown that the annotation mapping network generalizes 
     well and is context sensitive, supporting diverse input variability and an expansive annotation range.
-    </p>
-  <p>This framework can be quickly expanded with additional annotations such as pitch, brightness, fullness, range, and breath 
-    control, in near future releases. We have already prototyped a pitch annotation:
+    This framework can be quickly expanded with additional annotations such as pitch, brightness, fullness, range, and breath 
+    control, in near future releases. 
+  </p>
+  <p>We have already prototyped a pitch annotation:<br />
     <i>[audio sample]</i>
   </p>
   <p>
