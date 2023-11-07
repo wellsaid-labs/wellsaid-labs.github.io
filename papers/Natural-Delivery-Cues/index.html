@@ -84,10 +84,14 @@
           Today, we announce a breakthrough in generative modeling for speech synthesis: natural delivery cues.
         </p>
         <p>
-          Our flagship text-to-speech model learns a separate mapping network that maps from contextual annotations (cues) to a latent space 𝒲 that controls the 
-          generator. This allows for generating high-quality and diverse samples of the same script and speaker through a consistent, interpretable, and context-aware 
-          mechanism. This general framework supports many types of cues. Initially, we studied and released loudness, tempo, and pitch cues. We will be releasing more 
-          soon. We include audio samples below. 
+          Our flagship text-to-speech model learns a separate mapping network that maps from contextual annotations (cues) to a latent space 𝒲 that controls 
+          the generator. This allows for generating high-quality and diverse performances of the same script and speaker through a consistent, interpretable, 
+          and context-aware mechanism. Cues render new frequency spectra on a frame-by-frame basis. Initially, we studied and released loudness and tempo cues, 
+          finding that tempo annotations overcome traditional digital signal processing challenges regarding the inverse relationship between frequency and time. 
+          Similarly, loudness annotations were found to be capable of synthesizing both decibel and timbral changes.
+        </p>
+        <p>
+          This general framework supports many types of cues. We will be releasing more soon. We include audio samples below.
         </p>
         <p>
           Please email our CTO, Michael Petrochuk (michael [at] wellsaidlabs.com), with any questions.
