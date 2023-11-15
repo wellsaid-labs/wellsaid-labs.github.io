@@ -1,794 +1,837 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Interpolable Annotations for Controllable Generative Models by WellSaid Labs</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link 
-      href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" 
-      rel="stylesheet">
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="helper.js" defer></script>
-    <style>
-      td {
-        vertical-align: middle;
-      }
-      audio {
-        width: 20vw;
-        min-width: 100px;
-        max-width: 250px;
-      }
-      pre.language-xml {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        font-size: 12px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
-      <div class="text-center">
-        <h1>Interpolable Annotations (Cues) for Controllable Generative Models:</h1><h3>WellSaid's contextual TTS model for crafting authentic vocal performances</h3>
-        <p class="lead fw-bold">
-          |<a
-            href="https://wellsaid-labs.github.io/papers/Natural-Delivery-Cues"
-            class="btn border-white bg-white fw-bold"
-            >paper [TBD]</a
-          >|
-        </p>
-        <p class="fst-italic mb-0">
-          Sara Weisweaver, PhD; Rhyan Johnson; Sarah Fairweather; Alison Ma; Jordan Hoskins; Michael Petrochuk
-            <sup><a href="#note1" id="ref1" title="Authors are ordered by the number of letters in their first name.">1</a></sup>
-        </p>
-        <p><b>WellSaid Labs Research</b></p>
-      </div>
-      <p>
-        <b>Abstract.</b>  
-        Despite recent progress in generative speech modeling, generating high-quality, diverse samples from complex datasets remains an elusive goal. 
-        This work introduces a novel generative model combining state-of-the-art neural text-to-speech (TTS) and contextual annotations. 
-        We learn a separate mapping network that accepts any manner of supervised annotations for controlling the generator, allowing for scale-specific 
-        modulation and interpolation operations such as loudness and tempo adjustments. Such a setup ensures that our annotations are consistent, 
-        interpretable, and context-aware. Audio samples are available below. The model is available on <a href="https://wellsaidlabs.com/">wellsaidlabs.com</a>.
+<head>
+  <title>Annotations for Controllable Generative Models by WellSaid Labs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="helper.js" defer></script>
+  <style>
+    td {
+      vertical-align: middle;
+    }
+
+    audio {
+      width: 20vw;
+      min-width: 100px;
+      max-width: 250px;
+    }
+
+    pre.language-xml {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      font-size: 12px;
+    }
+
+    .samples-table {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .samples-table .col-index {
+      width: 5%;
+    }
+
+    .samples-table .col-descriptor {
+      width: 20%;
+    }
+
+    .samples-table .col-text-input {
+      width: 50%;
+    }
+
+    .samples-table .col-audio-output {
+      width: 25%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+    <div class="text-center">
+      <h1>[DRAFT] Annotations for Controllable Generative Models</h1>
+      <h4>Interpolable in-context annotations for crafting authentic vocal performances</h4>
+      <h6 class="lead fw-bold">
+        |<a href="https://wellsaid-labs.github.io/papers/Natural-Delivery-Cues"
+          class="btn border-white bg-white fw-bold">Paper [TBD]</a>|
+      </h6>
+      <p class="fst-italic mb-0">
+        Sara Weisweaver, PhD; Rhyan Johnson; Sarah Fairweather; Alison Ma; Jordan Hoskins; Michael Petrochuk
+        <sup><a href="#note1" id="ref1"
+            title="Authors are ordered by the number of letters in their first name.">1</a></sup>
       </p>
+      <p><b>WellSaid Labs Research</b></p>
     </div>
+    <p>
+      <b>Abstract.</b>
+      Despite recent progress in generative speech modeling, generating high-quality, diverse samples from complex
+      datasets remains an elusive goal.
+      This work introduces a novel generative model combining state-of-the-art neural text-to-speech (TTS) and
+      contextual annotations.
+      We learn a separate mapping network that accepts any manner of supervised annotations for controlling the
+      generator, allowing for scale-specific
+      modulation and interpolation operations such as loudness and tempo adjustments. Such a setup ensures that our
+      annotations are consistent,
+      interpretable, and context-aware. Audio samples are available below. The model is available on <a
+        href="https://wellsaidlabs.com/">wellsaidlabs.com</a>.
+    </p>
+  </div>
 
 
-    <div class="container shadow p-5 mb-5 bg-white rounded">
-      <h3>Introduction<a id="header1"></h3>
-      <p class="mb-0">
-        <p style="text-align: center;">
-          <figure class="text-center"><img src="Images/interpolable_model_diagram_sm.png" class="figure-img img-fluid rounded" 
-            alt="A diagram of a TTS model built using an annotation mapping network" width="800px">
-            <figcaption class="figure-caption">Image illustrates a Cues TTS model with an Annotation Mapping Network (AMN) for 
-              controlling speech synthesis.</figcaption>
-          </figure>
-        </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Introduction<a id="header1"></h3>
+    <p class="mb-0">
+    <p style="text-align: center;">
+    <figure class="text-center"><img src="Images/interpolable_model_diagram_sm.png" class="figure-img img-fluid rounded"
+        alt="A diagram of a TTS model built using an annotation mapping network" width="800px">
+      <figcaption class="figure-caption">Image illustrates a Cues TTS model with an Annotation Mapping Network (AMN) for
+        controlling speech synthesis.</figcaption>
+    </figure>
+    </p>
 
-        <p>
-          In recent years, generative models have ushered in a paradigm shift in content production. Despite their transformative capabilities, ensuring these 
-          models adhere to specific creative preferences remains challenging. The prevailing method for controlling generative models is by using natural language 
-          descriptions (i.e., prompts). However, many artistic preferences are nuanced and challenging to describe.
-        </p>
-        <p>
-          The method introduced in StyleGAN<a href="#note2" id="ref2" title="A Style-Based Generator Architecture for Generative Adversarial Networks; 
-          arxiv link below"><sup style="display: inline-block; border-bottom: 1px solid; padding-bottom: 6px">2</sup></a> and its related models offers an 
-          alternative approach. StyleGAN decouples the latent space, enabling precise manipulations that range from high-level attributes to finer details. 
-          These controls are not only precise and interpolable but are also interpretable and context-aware.
-        </p>
-        <p>
-          Today, we announce a breakthrough in generative modeling for speech synthesis: natural delivery cues.
-        </p>
-        <p>
-          Our flagship text-to-speech model learns a separate mapping network that maps from contextual annotations (cues) to a latent space 𝒲 that controls 
-          the generator. This allows for generating high-quality and diverse performances of the same script and speaker through a consistent, interpretable, 
-          and context-aware mechanism. Cues render new frequency spectra on a frame-by-frame basis. Initially, we studied and released loudness and tempo cues, 
-          finding that tempo annotations overcome traditional digital signal processing challenges regarding the inverse relationship between frequency and time. 
-          Similarly, loudness annotations were found to be capable of synthesizing both decibel and timbral changes.
-        </p>
-        <p>
-          This general framework supports many types of cues. We will be releasing more soon. We include audio samples below.
-        </p>
-        <p>
-          Please email our CTO, Michael Petrochuk (michael [at] wellsaidlabs.com), with any questions.
-        </p>
-      </p>
-    </div>
+    <p>
+      In recent years, generative models have ushered in a paradigm shift in content production. Despite their
+      transformative capabilities, ensuring these
+      models adhere to specific creative preferences remains challenging. The prevailing method for controlling
+      generative models is by using natural language
+      descriptions (i.e., prompts). However, many artistic preferences are nuanced and challenging to describe.
+    </p>
+    <p>
+      The method introduced in StyleGAN<a href="#note2" id="ref2" title="A Style-Based Generator Architecture for Generative Adversarial Networks;
+          arxiv link below"><sup
+          style="display: inline-block; border-bottom: 1px solid; padding-bottom: 6px">2</sup></a> and its related
+      models offers an
+      alternative approach. StyleGAN decouples the latent space, enabling precise manipulations that range from
+      high-level attributes to finer details.
+      These controls are not only precise and interpolable but are also interpretable and context-aware.
+    </p>
+    <p>
+      Today, we announce a breakthrough in generative modeling for speech synthesis: natural delivery cues.
+    </p>
+    <p>
+      Our flagship text-to-speech model learns a separate mapping network that maps from contextual annotations (cues)
+      to a latent space 𝒲 that controls
+      the generator. This allows for generating high-quality and diverse performances of the same script and speaker
+      through a consistent, interpretable,
+      and context-aware mechanism.
+    </p>
+    <p>
+      Initially, we studied loudness and tempo cues, addressing their historical challenges using
+      this framework. Our loudness cue not only adjusts decibel levels but also modulates timbre,
+      resulting in a more naturally sounding alteration. Our tempo cue avoids altering pitch,
+      addressing the complex inverse relationship between frequency and time.
+    </p>
+    <p>
+      This general framework supports many types of cues. We will be releasing more soon. We include audio samples
+      below.
+    </p>
+    <p>
+      Please email our CTO, Michael Petrochuk (michael [at] wellsaidlabs.com), with any questions.
+    </p>
+    </p>
+  </div>
 
-    <div class="container shadow p-5 mb-5 bg-white rounded">
-        <h3>Range and Diversity<a id="samples1"></a></h3>
-          <p>
-            In a novel approach, we use annotations alone to successfully guide the model into comprehensive possible points in the solution space for a single target
-          speaker using the same sample script.
-          </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Range and Diversity<a id="samples1"></a></h3>
+    <p>
+      In a novel approach, we use annotations alone to successfully guide the model into comprehensive possible points
+      in the solution space for a single target
+      speaker using the same sample script.
+    </p>
 
-<!--Sample set code block start-->
-          <p><b>Sample set 1</b>
-            <br/>Speaker: Ben D.
-            <br/>Style: Narration
-            <br/>Source speaker language & location: English, South Africa
-          </p>
-  
-      <div class="container pt-3 table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th width="5%"></th>
-              <th width="30%">Descriptor</th>
-              <th width="45%">Text Input</th>
-              <th width="20%">Audio Output</th>
-            </tr>
-          </thead> 
-          <tbody>
-            <tr>
-              <td>1A</td>
-              <td>No annotations</td>
-              <td>
-                <pre>
+    <!--Sample set code block start-->
+    <p><b>Sample set 1</b>
+      <br />Speaker: Ben D.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, South Africa
+    </p>
+
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
                   <code class="language-xml">
-Time for a quick Knowledge Check! Please read the questions 
+Time for a quick Knowledge Check! Please read the questions
 carefully before selecting your answers.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
+            </td>
+            <td>
+              <audio controls>
                 <source src="Audio/1A.mp3" type="audio/mp3">
                 Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-            <tr>
-              <td>1B</td>
-              <td>Call to action slowed</td>
-              <td>
-                <pre>
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>1B</td>
+            <td>Call to action slowed</td>
+            <td>
+              <pre>
                   <code class="language-xml">
 Time for a quick Knowledge Check! Please &lt;tempo value=&quot;0.5&quot;&gt;
-read the questions carefully&lt;/tempo&gt; before selecting your 
+read the questions carefully&lt;/tempo&gt; before selecting your
 answers.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
-                  <source src="Audio/1B.mp3" type="audio/mp3">
-                  Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-            <tr>
-              <td>1C</td>
-              <td>Activity name made louder and slower</td>
-              <td>
-                <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/1B.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>1C</td>
+            <td>Activity name made louder and slower</td>
+            <td>
+              <pre>
                   <code class="language-xml">
 Time for a quick &lt;tempo value=&quot;0.5&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;
-Knowledge Check&lt;/loudness&gt;&lt;/tempo&gt;! Please read the questions 
+Knowledge Check&lt;/loudness&gt;&lt;/tempo&gt;! Please read the questions
 carefully before selecting your answers.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
+            </td>
+            <td>
+              <audio controls>
                 <source src="Audio/1C.mp3" type="audio/mp3">
                 Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>           
-            <tr>
-              <td>1D</td>
-              <td>Focus on eliciting user response</td>
-              <td>
-                <pre>
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>1D</td>
+            <td>Focus on eliciting user response</td>
+            <td>
+              <pre>
                   <code class="language-xml">
 Time &lt;loudness value=&quot;8&quot;&gt;for a quick Knowledge Check
-&lt;/loudness&gt;! Please &lt;tempo value=&quot;0.5&quot;&gt;read the questions 
+&lt;/loudness&gt;! Please &lt;tempo value=&quot;0.5&quot;&gt;read the questions
 carefully&lt;/tempo&gt; &lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness value=&quot;10&quot;&gt;
 before&lt;/loudness&gt;&lt;/tempo&gt; selecting your answers.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
+            </td>
+            <td>
+              <audio controls>
                 <source src="Audio/1D.mp3" type="audio/mp3">
                 Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <br />
-      </div>
-<!--Sample set code block end-->
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
 
-<!--Sample set code block start-->
-      <p><b>Sample set 2</b>
+    <!--Sample set code block start-->
+    <p><b>Sample set 2</b>
       <br />Speaker: Terra G.
       <br />Style: Narration
-      <br />Source speaker language & location: English, United States</p>
+      <br />Source speaker language & location: English, United States
+    </p>
 
-  <div class="container pt-3 table-responsive">
-    <table class="table align-middle">
-      <thead>
-        <tr>
-          <th width="5%"></th>
-          <th width="35%">Descriptor</th>
-          <th width="45%">Text Input</th>
-          <th width="20%">Audio Output</th>
-        </tr>
-      </thead>  
-      <tbody>
-        <tr>
-          <td>2A</td>
-          <td>No annotations</td>
-          <td>
-            <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
               <code class="language-xml">
 Each of these products requires an HCS container label.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/2A.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-        <tr>
-          <td>2B</td>
-          <td>Louder</td>
-          <td>
-            <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/2A.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>2B</td>
+            <td>Louder</td>
+            <td>
+              <pre>
               <code class="language-xml">
-&lt;loudness value=&quot;10&quot;&gt;Each of these products requires an HCS 
+&lt;loudness value=&quot;10&quot;&gt;Each of these products requires an HCS
 container label&lt;/loudness&gt;.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-              <source src="Audio/2B.mp3" type="audio/mp3">
-              Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-        <tr>
-          <td>2C</td>
-          <td>Quieter</td>
-          <td>
-            <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/2B.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>2C</td>
+            <td>Quieter</td>
+            <td>
+              <pre>
               <code class="language-xml">
-&lt;loudness value=&quot;-20&quot;&gt;Each of these products requires an HCS 
+&lt;loudness value=&quot;-20&quot;&gt;Each of these products requires an HCS
 container label&lt;/loudness&gt;.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/2C.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>           
-        <tr>
-          <td>2D</td>
-          <td>Slower</td>
-          <td>
-            <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/2C.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>2D</td>
+            <td>Slower</td>
+            <td>
+              <pre>
               <code class="language-xml">
-&lt;tempo value=&quot;0.5&quot;&gt;Each of these products requires an HCS container 
+&lt;tempo value=&quot;0.5&quot;&gt;Each of these products requires an HCS container
 label&lt;/tempo&gt;.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/2D.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-        <tr>
-          <td>2E</td>
-          <td>Faster</td>
-          <td>
-            <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/2D.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>2E</td>
+            <td>Faster</td>
+            <td>
+              <pre>
               <code class="language-xml">
-&lt;tempo value=&quot;2.5&quot;&gt;Each of these products requires an HCS container 
+&lt;tempo value=&quot;2.5&quot;&gt;Each of these products requires an HCS container
 label&lt;/tempo&gt;.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/2E.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-        <tr>
-          <td>2F</td>
-          <td>Key information emphasized</td>
-          <td>
-            <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/2E.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>2F</td>
+            <td>Key information emphasized</td>
+            <td>
+              <pre>
               <code class="language-xml">
-Each of these products requires &lt;tempo value=&quot;0.8&quot;&gt;&lt;loudness 
+Each of these products requires &lt;tempo value=&quot;0.8&quot;&gt;&lt;loudness
 value=&quot;2&quot;&gt;an HCS container label&lt;/loudness&gt;&lt;/tempo&gt;.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/2F.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br />
-  </div>
-  <!--Sample set code block end-->
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/2F.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
 
-  <!--Sample set code block start-->
-  <p><b>Sample set 3</b>
-  <br />Speaker: Alan T.
-  <br />Style: Narration
-  <br />Source speaker language & location: English, United Kingdom</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 3</b>
+      <br />Speaker: Alan T.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United Kingdom
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead> 
-  <tbody>
-    <tr>
-      <td>3A</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>3A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
           <code class="language-xml">
-A large rose-tree stood near the entrance of the garden: the roses 
-growing on it were white, but there were three gardeners at it, 
+A large rose-tree stood near the entrance of the garden: the roses
+growing on it were white, but there were three gardeners at it,
 busily painting them red.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3a.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3B</td>
-      <td>Faster</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3B</td>
+            <td>Faster</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;2.5&quot;&gt;A large rose-tree stood near the entrance of the 
-garden: the roses growing on it were white, but there were three 
+&lt;tempo value=&quot;2.5&quot;&gt;A large rose-tree stood near the entrance of the
+garden: the roses growing on it were white, but there were three
 gardeners at it, busily painting them red&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/3b.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3C</td>
-      <td>Slower</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3C</td>
+            <td>Slower</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;0.7&quot;&gt;A large rose-tree stood near the entrance of the 
-garden: the roses growing on it were white, but there were three 
+&lt;tempo value=&quot;0.7&quot;&gt;A large rose-tree stood near the entrance of the
+garden: the roses growing on it were white, but there were three
 gardeners at it, busily painting them red&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>3D</td>
-      <td>Quieter</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3D</td>
+            <td>Quieter</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;loudness value=&quot;-20&quot;&gt;A large rose-tree stood near the entrance of 
-the garden: the roses growing on it were white, but there were 
+&lt;loudness value=&quot;-20&quot;&gt;A large rose-tree stood near the entrance of
+the garden: the roses growing on it were white, but there were
 three gardeners at it, busily painting them red&lt;/loudness&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3E</td>
-      <td>Louder</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3E</td>
+            <td>Louder</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;loudness value=&quot;10&quot;&gt;A large rose-tree stood near the entrance of 
-the garden: the roses growing on it were white, but there were 
+&lt;loudness value=&quot;10&quot;&gt;A large rose-tree stood near the entrance of
+the garden: the roses growing on it were white, but there were
 three gardeners at it, busily painting them red&lt;/loudness&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3F</td>
-      <td>Louder and Faster</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3F</td>
+            <td>Louder and Faster</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;1.9&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;A large rose-tree stood near 
-the entrance of the garden: the roses growing on it were white, but 
-there were three gardeners at it, busily painting them 
+&lt;tempo value=&quot;1.9&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;A large rose-tree stood near
+the entrance of the garden: the roses growing on it were white, but
+there were three gardeners at it, busily painting them
 red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3G</td>
-      <td>Louder and Slower</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3G</td>
+            <td>Louder and Slower</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;A large rose-tree stood near 
-the entrance of the garden: the roses growing on it were white, but 
-there were three gardeners at it, busily painting them 
+&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;6&quot;&gt;A large rose-tree stood near
+the entrance of the garden: the roses growing on it were white, but
+there were three gardeners at it, busily painting them
 red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3g.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3H</td>
-      <td>Slower and Quieter</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3g.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3H</td>
+            <td>Slower and Quieter</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-8&quot;&gt;A large rose-tree stood 
-near the entrance of the garden: the roses growing on it were 
-white, but there were three gardeners at it, busily painting them 
+&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-8&quot;&gt;A large rose-tree stood
+near the entrance of the garden: the roses growing on it were
+white, but there were three gardeners at it, busily painting them
 red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3h.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>3I</td>
-      <td>Quieter and Faster</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3h.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>3I</td>
+            <td>Quieter and Faster</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;1.9&quot;&gt;&lt;loudness value=&quot;-8&quot;&gt;A large rose-tree stood 
-near the entrance of the garden: the roses growing on it were 
-white, but there were three gardeners at it, busily painting them 
+&lt;tempo value=&quot;1.9&quot;&gt;&lt;loudness value=&quot;-8&quot;&gt;A large rose-tree stood
+near the entrance of the garden: the roses growing on it were
+white, but there were three gardeners at it, busily painting them
 red&lt;/loudness&gt;&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/3i.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/3i.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
 
-<!--Sample set code block start-->
-<p><b>Sample set 4</b>
-<br />Speaker: Jordan T.
-<br />Style: Narration
-<br />Source speaker language & location: English, United States</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 4</b>
+      <br />Speaker: Jordan T.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>4A</td>
-    <td>No annotations</td>
-    <td>
-      <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>4A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
         <code class="language-xml">
 I didn’t say you were wrong.</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/4a.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-  <tr>
-    <td>4B</td>
-    <td>Casual, off-hand effect</td>
-    <td>
-      <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/4a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>4B</td>
+            <td>Casual, off-hand effect</td>
+            <td>
+              <pre>
         <code class="language-xml">
-&lt;tempo value=&quot;2.2&quot;&gt;&lt;loudness value=&quot;8&quot;&gt;I didn&#039;t say you were 
+&lt;tempo value=&quot;2.2&quot;&gt;&lt;loudness value=&quot;8&quot;&gt;I didn&#039;t say you were
 wrong&lt;/loudness&gt;&lt;/tempo&gt;.</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-        <source src="Audio/4B.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-  <tr>
-    <td>4C</td>
-    <td>Measured, emotive effect</td>
-    <td>
-      <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/4B.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>4C</td>
+            <td>Measured, emotive effect</td>
+            <td>
+              <pre>
         <code class="language-xml">
-&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-12&quot;&gt;I didn&#039;t say you were 
+&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-12&quot;&gt;I didn&#039;t say you were
 wrong&lt;/loudness&gt;&lt;/tempo&gt;.</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/4c.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>           
-</tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
-</div>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/4c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
+  </div>
 
-<div class="container shadow p-5 mb-5 bg-white rounded">
-      <h3>Robustness<a id="Samples2"></a></h3>
-          <p>
-            The model responds intuitively to a variety of inputs: various cue and text lengths, various annotation combinations, and various nesting patterns.
-          </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Robustness<a id="Samples2"></a></h3>
+    <p>
+      The model responds intuitively to a variety of inputs: various cue and text lengths, various annotation
+      combinations, and various nesting patterns.
+    </p>
 
 
-<!--variation 2 Sample set code block start-->
-          <p><b>Sample set 5</b>
-            <br/>Speaker: Paige L.
-            <br/>Style: Narration
-            <br/>Source speaker language & location: English, United States
-          </p>
-  
-      <div class="container pt-3 table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th width="5%"></th>
-              <th width="35%">Descriptor</th>
-              <th width="45%">Text Input</th>
-              <th width="20%">Audio Output</th>
-            </tr>
-          </thead> 
-          <tbody>
-            <tr>
-              <td>5A</td>
-              <td>Editor's choice:<br />entire clip slowed, with loudness increased on key phrases</td>
-              <td>
-                <pre>
+    <!--variation 2 Sample set code block start-->
+    <p><b>Sample set 5</b>
+      <br />Speaker: Paige L.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
+
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5A</td>
+            <td>Editor's choice:<br />entire clip slowed, with loudness increased on key phrases</td>
+            <td>
+              <pre>
                   <code class="language-xml">
-&lt;tempo value=&quot;0.6&quot;&gt;In recent years, generative models have ushered 
+&lt;tempo value=&quot;0.6&quot;&gt;In recent years, generative models have ushered
 in a paradigm shift in &lt;respell value=&quot;KAHN-tehnt&quot;&gt;content
-&lt;/respell&gt; production. &lt;loudness value=&quot;12&quot;&gt;Despite&lt;/loudness&gt; 
-their &lt;respell value=&quot;trans-FOR-muh-dihv&quot;&gt;transformative&lt;/respell&gt; 
-capabilities, ensuring these models adhere to specific creative 
+&lt;/respell&gt; production. &lt;loudness value=&quot;12&quot;&gt;Despite&lt;/loudness&gt;
+their &lt;respell value=&quot;trans-FOR-muh-dihv&quot;&gt;transformative&lt;/respell&gt;
+capabilities, ensuring these models adhere to specific creative
 preferences remains challenging. The &lt;loudness value=&quot;12&quot;&gt;
-prevailing method&lt;/loudness&gt; for controlling generative models is 
-by using natural language descriptions (meaning, prompts). However, 
-many artistic preferences are often nuanced and more challenging to 
+prevailing method&lt;/loudness&gt; for controlling generative models is
+by using natural language descriptions (meaning, prompts). However,
+many artistic preferences are often nuanced and more challenging to
 describe&lt;/tempo&gt;.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
+            </td>
+            <td>
+              <audio controls>
                 <source src="Audio/5a.mp3" type="audio/mp3">
                 Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <br />
-      </div>
-        <p>Speaker: Paul B.
-        <br/>Style: Promo
-        <br/>Source speaker language & location: English, United States
-      </p>
-  <div class="container pt-3 table-responsive">
-    <table class="table align-middle">
-      <thead>
-        <tr>
-          <th width="5%"></th>
-          <th width="35%">Descriptor</th>
-          <th width="45%">Text Input</th>
-          <th width="20%">Audio Output</th>
-        </tr>
-      </thead> 
-      <tbody>
-        <tr>
-          <td>5B</td>
-          <td>Paced (pauses lengthened) and directed for short ad to appear on social media</td>
-          <td>
-            <pre>
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Paul B.
+      <br />Style: Promo
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5B</td>
+            <td>Paced (pauses lengthened) and directed for short ad to appear on social media</td>
+            <td>
+              <pre>
               <code class="language-xml">
-Come with me, and discover an &lt;tempo value=“0.7”&gt;&lt;loudness 
-value=&quot;-2&quot;&gt;icy world of refreshment&lt;/loudness&gt;&lt;/tempo&gt;&lt;tempo 
-value=“0.6”&gt;&lt;loudness value=&quot;-50&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;New &lt;respell 
-value=&quot;BAWSK&quot;&gt;Bosc&lt;/respell&gt; &lt;tempo value=“2”&gt;is here&lt;/tempo&gt;! 
-Chillingly crisp and clear&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness 
+Come with me, and discover an &lt;tempo value=“0.7”&gt;&lt;loudness
+value=&quot;-2&quot;&gt;icy world of refreshment&lt;/loudness&gt;&lt;/tempo&gt;&lt;tempo
+value=“0.6”&gt;&lt;loudness value=&quot;-50&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;New &lt;respell
+value=&quot;BAWSK&quot;&gt;Bosc&lt;/respell&gt; &lt;tempo value=“2”&gt;is here&lt;/tempo&gt;!
+Chillingly crisp and clear&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness
 value=&quot;-50&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;&lt;respell value=&quot;BAWSK&quot;&gt;
 Bosc&lt;/respell&gt;... &lt;tempo value=&quot;0.8&quot;&gt;bubbly cold refreshment
-&lt;/tempo&gt; with that &lt;tempo value=&quot;0.8&quot;&gt;light, luscious &lt;respell 
+&lt;/tempo&gt; with that &lt;tempo value=&quot;0.8&quot;&gt;light, luscious &lt;respell
 value=&quot;PERR&quot;&gt;pear&lt;/respell&gt; flavor&lt;/tempo&gt;. &lt;tempo value=&quot;1.6&quot;&gt;
 Lemon and lime are fine&lt;/tempo&gt;. &lt;respell value=&quot;BAWSK&quot;&gt;
-Bosc&lt;/respell&gt; is better&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness value=&quot;-50&quot;&gt;. 
-&lt;/loudness&gt;&lt;/tempo&gt;Crack open a world &lt;tempo value=&quot;0.8&quot;&gt;&lt;loudness 
+Bosc&lt;/respell&gt; is better&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness value=&quot;-50&quot;&gt;.
+&lt;/loudness&gt;&lt;/tempo&gt;Crack open a world &lt;tempo value=&quot;0.8&quot;&gt;&lt;loudness
 value=&quot;4&quot;&gt;of icy cool refreshment&lt;/loudness&gt;&lt;/tempo&gt;.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/5b.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br />
-  </div>
-  <p>Speaker: Ramona J.
-    <br/>Style: Promo
-    <br/>Source speaker language & location: English, United States
-  </p>
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-<tbody>
-    <tr>
-      <td>5C</td>
-      <td>Paced (pauses lengthened) and directed for short ad to appear on social media</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/5b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Ramona J.
+      <br />Style: Promo
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5C</td>
+            <td>Paced (pauses lengthened) and directed for short ad to appear on social media</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Come with me, and discover an &lt;tempo value=“0.7”&gt;&lt;loudness 
-value=&quot;-2&quot;&gt;icy world of refreshment&lt;/loudness&gt;&lt;/tempo&gt;&lt;tempo 
-value=“0.6”&gt;&lt;loudness value=&quot;-50&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;New &lt;respell 
-value=&quot;BAWSK&quot;&gt;Bosc&lt;/respell&gt; &lt;tempo value=“2”&gt;is here&lt;/tempo&gt;! 
-Chillingly crisp and clear&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness 
+Come with me, and discover an &lt;tempo value=“0.7”&gt;&lt;loudness
+value=&quot;-2&quot;&gt;icy world of refreshment&lt;/loudness&gt;&lt;/tempo&gt;&lt;tempo
+value=“0.6”&gt;&lt;loudness value=&quot;-50&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;New &lt;respell
+value=&quot;BAWSK&quot;&gt;Bosc&lt;/respell&gt; &lt;tempo value=“2”&gt;is here&lt;/tempo&gt;!
+Chillingly crisp and clear&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness
 value=&quot;-50&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;&lt;respell value=&quot;BAWSK&quot;&gt;
 Bosc&lt;/respell&gt;... &lt;tempo value=&quot;0.8&quot;&gt;bubbly cold refreshment
-&lt;/tempo&gt; with that &lt;tempo value=&quot;0.8&quot;&gt;light, luscious &lt;respell 
+&lt;/tempo&gt; with that &lt;tempo value=&quot;0.8&quot;&gt;light, luscious &lt;respell
 value=&quot;PERR&quot;&gt;pear&lt;/respell&gt; flavor&lt;/tempo&gt;. &lt;tempo value=&quot;1.6&quot;&gt;
 Lemon and lime are fine&lt;/tempo&gt;. &lt;respell value=&quot;BAWSK&quot;&gt;
-Bosc&lt;/respell&gt; is better&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness value=&quot;-50&quot;&gt;. 
-&lt;/loudness&gt;&lt;/tempo&gt;Crack open a world &lt;tempo value=&quot;0.8&quot;&gt;&lt;loudness 
+Bosc&lt;/respell&gt; is better&lt;tempo value=&quot;0.6&quot;&gt;&lt;loudness value=&quot;-50&quot;&gt;.
+&lt;/loudness&gt;&lt;/tempo&gt;Crack open a world &lt;tempo value=&quot;0.8&quot;&gt;&lt;loudness
 value=&quot;4&quot;&gt;of icy cool&lt;/loudness&gt;&lt;/tempo&gt; refreshment.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/5c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<p><b>Sample set 6</b>
-  <br/>Speaker: Lulu G.
-  <br/>Style: Narration
-  <br/>Source speaker language & location: English, United States
-</p>
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr>
-      <td>6A</td>
-      <td>4239 characters generated in a single take with no annotations and no degradation</td>
-      <td><pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/5c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p><b>Sample set 6</b>
+      <br />Speaker: Lulu G.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>6A</td>
+            <td>4239 characters generated in a single take with no annotations and no degradation</td>
+            <td>
+              <pre>
         <code class="language-xml">
 8-track cartridge.
 From Wikipedia, the free encyclopedia.
 
-The 8-track tape is a magnetic-tape sound-recording technology that 
-was popular from the mid-1960s to the early 1980s, when the compact 
-cassette, which pre-dated the 8-track system, surpassed it in 
+The 8-track tape is a magnetic-tape sound-recording technology that
+was popular from the mid-1960s to the early 1980s, when the compact
+cassette, which pre-dated the 8-track system, surpassed it in
 popularity for pre-recorded music.
 
 # Full script has been truncated here
 
-In the U.S., eight-track cartridges were phased out of retail stores 
-in late 1982 and early 1983. However, some titles were still available 
-as eight-track tapes through Columbia House and RCA Music Service 
-Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation) 
-continued to sell blank eight-track cartridges and players for home 
+In the U.S., eight-track cartridges were phased out of retail stores
+in late 1982 and early 1983. However, some titles were still available
+as eight-track tapes through Columbia House and RCA Music Service
+Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation)
+continued to sell blank eight-track cartridges and players for home
 recording use under its Realistic brand.</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/6A.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-  <tr>
-    <td>6B</td>
-    <td>4239 characters generated in a single take with second to last paragraph annotated. The model shows no degradation 
-      in the annotated portion, and resumes normal loudness and tempo for the final paragraph.</td>
-    <td>
-      <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/6A.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>6B</td>
+            <td>4239 characters generated in a single take with second to last paragraph annotated. The model shows no
+              degradation
+              in the annotated portion, and resumes normal loudness and tempo for the final paragraph.</td>
+            <td>
+              <pre>
         <code class="language-xml">
 8-track cartridge.
 From Wikipedia, the free encyclopedia.
@@ -797,32 +840,32 @@ The 8-track tape is a magnetic-tape sound-recording technology...
 
 # Full script has been truncated here; audio starts at 3:53
 
-&lt;tempo value="0.6"&gt;&lt;loudness value="4"&gt;1978 was the peak year 
-for 8-track sales in the United States, with sales declining rapidly 
-from then on. Eight-track players became less common in homes and vehicles 
+&lt;tempo value="0.6"&gt;&lt;loudness value="4"&gt;1978 was the peak year
+for 8-track sales in the United States, with sales declining rapidly
+from then on. Eight-track players became less common in homes and vehicles
 in the late 1970s. The compact cassette had arrived in 1963&lt;/loudness&gt;
 &lt;/tempo&gt;.
 
-In the U.S., eight-track cartridges were phased out of retail stores 
-in late 1982 and early 1983. However, some titles were still available 
-as eight-track tapes through Columbia House and RCA Music Service 
-Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation) 
-continued to sell blank eight-track cartridges and players for home 
+In the U.S., eight-track cartridges were phased out of retail stores
+in late 1982 and early 1983. However, some titles were still available
+as eight-track tapes through Columbia House and RCA Music Service
+Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation)
+continued to sell blank eight-track cartridges and players for home
 recording use under its Realistic brand.</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/6B.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-  <tr>
-    <td>6C</td>
-    <td>4239 characters generated in a single take with entire passage annotated and no degradation.</td>
-    <td>
-      <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/6B.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>6C</td>
+            <td>4239 characters generated in a single take with entire passage annotated and no degradation.</td>
+            <td>
+              <pre>
         <code class="language-xml">
 &lt;tempo value="1.4"&gt;&lt;loudness value="-2"&gt;8-track cartridge.
 From Wikipedia, the free encyclopedia.
@@ -831,1330 +874,1413 @@ The 8-track tape is a magnetic-tape sound-recording technology...
 
 # Full script has been truncated here
 
-In the U.S., eight-track cartridges were phased out of retail stores 
-in late 1982 and early 1983. However, some titles were still available 
-as eight-track tapes through Columbia House and RCA Music Service 
-Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation) 
-continued to sell blank eight-track cartridges and players for home 
+In the U.S., eight-track cartridges were phased out of retail stores
+in late 1982 and early 1983. However, some titles were still available
+as eight-track tapes through Columbia House and RCA Music Service
+Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation)
+continued to sell blank eight-track cartridges and players for home
 recording use under its Realistic brand&lt;/loudness&gt;&lt;/tempo&gt;.</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/6C.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-</tbody>
-</table>
-<br />
-</div>
-</div>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/6C.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+  </div>
 
-<div class="container shadow p-5 mb-5 bg-white rounded">
-<h3>Interpolation<a id="Samples4"></a></h3>
-          <p>
-            The model can generate audio between a range of annotation values, allowing for precise control.
-          </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Interpolation<a id="Samples4"></a></h3>
+    <p>
+      The model can generate audio between a range of annotation values, allowing for precise control.
+    </p>
 
-<!--Sample set code block start-->
-<p><b>Sample set 7</b>
-  <br />Speaker: Garry J.
-  <br />Style: Narration
-  <br />Source speaker language & location: English, Canada</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 7</b>
+      <br />Speaker: Garry J.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, Canada
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>7A</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>7A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
           <code class="language-xml">
-“Listen”, said the chief clerk in the next room, “he’s turning the 
+“Listen”, said the chief clerk in the next room, “he’s turning the
 key.”</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/7a.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>7B</td>
-      <td>Dialogue louder at 2</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/7a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>7B</td>
+            <td>Dialogue louder at 2</td>
+            <td>
+              <pre>
           <code class="language-xml">
-“&lt;loudness value=&quot;2&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in 
-the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the 
+“&lt;loudness value=&quot;2&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in
+the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the
 key&lt;/loudness&gt;.”</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/7b.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>7C</td>
-      <td>Dialogue louder at 4</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/7b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>7C</td>
+            <td>Dialogue louder at 4</td>
+            <td>
+              <pre>
           <code class="language-xml">
-“&lt;loudness value=&quot;4&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in 
-the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the 
+“&lt;loudness value=&quot;4&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in
+the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the
 key&lt;/loudness&gt;.”</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/7c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>7D</td>
-      <td>Dialogue louder at 6</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/7c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>7D</td>
+            <td>Dialogue louder at 6</td>
+            <td>
+              <pre>
           <code class="language-xml">
-“&lt;loudness value=&quot;6&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in 
-the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the 
+“&lt;loudness value=&quot;6&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in
+the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the
 key&lt;/loudness&gt;.”</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/7d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>7E</td>
-      <td>Dialogue louder at 8</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/7d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>7E</td>
+            <td>Dialogue louder at 8</td>
+            <td>
+              <pre>
           <code class="language-xml">
-“&lt;loudness value=&quot;8&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in 
-the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the 
+“&lt;loudness value=&quot;8&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in
+the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the
 key&lt;/loudness&gt;.”</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/7e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>7F</td>
-      <td>Dialogue full user-facing loudness at 10</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/7e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>7F</td>
+            <td>Dialogue full user-facing loudness at 10</td>
+            <td>
+              <pre>
           <code class="language-xml">
-“&lt;loudness value=&quot;10&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in 
-the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the 
+“&lt;loudness value=&quot;10&quot;&gt;Listen&lt;/loudness&gt;,&quot; said the chief clerk in
+the next room; “&lt;loudness value=&quot;2&quot;&gt;he’s turning the
 key&lt;/loudness&gt;.”</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/7f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/7f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
 
-<!--Sample set code block start-->
-<p><b>Sample set 8</b>
-  <br />Speaker: Zach E.
-  <br />Style: Promo
-  <br />Source speaker language & location: English, United States</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 8</b>
+      <br />Speaker: Zach E.
+      <br />Style: Promo
+      <br />Source speaker language & location: English, United States
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>8A</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>8A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Thanks for asking. I haven't been able to find the right links. Can 
+Thanks for asking. I haven't been able to find the right links. Can
 you help me?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/8a.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>8B</td>
-      <td>Middle sentence quieter at -2</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/8a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>8B</td>
+            <td>Middle sentence quieter at -2</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Thanks for asking. &lt;loudness value=&quot;-2&quot;&gt;I haven&#039;t been able to find 
+Thanks for asking. &lt;loudness value=&quot;-2&quot;&gt;I haven&#039;t been able to find
 the right links&lt;/loudness&gt;. Can you help me?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/8b.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>8C</td>
-      <td>Middle sentence quieter at -4</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/8b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>8C</td>
+            <td>Middle sentence quieter at -4</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Thanks for asking. &lt;loudness value=&quot;-4&quot;&gt;I haven&#039;t been able to find 
+Thanks for asking. &lt;loudness value=&quot;-4&quot;&gt;I haven&#039;t been able to find
 the right links&lt;/loudness&gt;. Can you help me?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/8c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>8D</td>
-      <td>Middle sentence quieter at -8</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/8c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>8D</td>
+            <td>Middle sentence quieter at -8</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Thanks for asking. &lt;loudness value=&quot;-8&quot;&gt;I haven&#039;t been able to find 
+Thanks for asking. &lt;loudness value=&quot;-8&quot;&gt;I haven&#039;t been able to find
 the right links&lt;/loudness&gt;. Can you help me?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/8d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>8E</td>
-      <td>Middle sentence quieter at -12</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/8d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>8E</td>
+            <td>Middle sentence quieter at -12</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Thanks for asking. &lt;loudness value=&quot;-12&quot;&gt;I haven&#039;t been able to find 
+Thanks for asking. &lt;loudness value=&quot;-12&quot;&gt;I haven&#039;t been able to find
 the right links&lt;/loudness&gt;. Can you help me?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/8e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>8F</td>
-      <td>Middle sentence max user-facing quiet at -20</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/8e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>8F</td>
+            <td>Middle sentence max user-facing quiet at -20</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Thanks for asking. &lt;loudness value=&quot;-20&quot;&gt;I haven&#039;t been able to find 
+Thanks for asking. &lt;loudness value=&quot;-20&quot;&gt;I haven&#039;t been able to find
 the right links&lt;/loudness&gt;. Can you help me?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/8f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/8f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
 
-<!--Sample set code block start-->
-<p><b>Sample set 9</b>
-  <br />Speaker: Sofia H.
-  <br />Style: Conversational
-  <br />Source speaker language & location: English, United States</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 9</b>
+      <br />Speaker: Sofia H.
+      <br />Style: Conversational
+      <br />Source speaker language & location: English, United States
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>9A</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>9A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
           <code class="language-xml">
-The following preview has been rated for mature 
+The following preview has been rated for mature
 audiences only. Viewer discretion is advised.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/9a.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>9B</td>
-      <td>Faster at 1.3</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/9a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>9B</td>
+            <td>Faster at 1.3</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;1.3&quot;&gt;The following preview has been rated for mature 
+&lt;tempo value=&quot;1.3&quot;&gt;The following preview has been rated for mature
 audiences only. Viewer discretion is advised&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/9b.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>9C</td>
-      <td>Faster at 1.6</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/9b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>9C</td>
+            <td>Faster at 1.6</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;1.6&quot;&gt;The following preview has been rated for mature 
+&lt;tempo value=&quot;1.6&quot;&gt;The following preview has been rated for mature
 audiences only. Viewer discretion is advised&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/9c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>9D</td>
-      <td>Faster at 1.9</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/9c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>9D</td>
+            <td>Faster at 1.9</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;1.9&quot;&gt;The following preview has been rated for mature 
+&lt;tempo value=&quot;1.9&quot;&gt;The following preview has been rated for mature
 audiences only. Viewer discretion is advised&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/9d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>9E</td>
-      <td>Faster at 2.2</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/9d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>9E</td>
+            <td>Faster at 2.2</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;2.2&quot;&gt;The following preview has been rated for mature 
+&lt;tempo value=&quot;2.2&quot;&gt;The following preview has been rated for mature
 audiences only. Viewer discretion is advised&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/9e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>9F</td>
-      <td>Fastest user-facing pace at 2.5</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/9e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>9F</td>
+            <td>Fastest user-facing pace at 2.5</td>
+            <td>
+              <pre>
           <code class="language-xml">
-&lt;tempo value=&quot;2.5&quot;&gt;The following preview has been rated for mature 
+&lt;tempo value=&quot;2.5&quot;&gt;The following preview has been rated for mature
 audiences only. Viewer discretion is advised&lt;/tempo&gt;.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/9f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/9f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
 
-<!--Sample set code block start-->
-<p><b>Sample set 10</b>
-  <br />Speaker: Michael V.
-  <br />Style: Narration
-  <br />Source speaker language & location: English, United States</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 10</b>
+      <br />Speaker: Michael V.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>10A</td>
-      <td>No speed annotations, one respelling cue</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10A</td>
+            <td>No speed annotations, one respelling cue</td>
+            <td>
+              <pre>
           <code class="language-xml">
 Boyle's law states, the absolute pressure &lt;respell value=
-&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass of an ideal gas 
-is inversely proportional to the volume it occupies, if the 
-temperature and amount of gas remain unchanged within a closed 
+&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass of an ideal gas
+is inversely proportional to the volume it occupies, if the
+temperature and amount of gas remain unchanged within a closed
 system.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/10a.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>10B</td>
-      <td>Definition slower at 0.9</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/10a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>10B</td>
+            <td>Definition slower at 0.9</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Boyle's law states, &lt;tempo value=&quot;0.9&quot;&gt;the absolute pressure 
-&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass 
-of an ideal gas is inversely proportional to the volume it 
-occupies&lt;/tempo&gt;, if the temperature and amount of gas remain 
+Boyle's law states, &lt;tempo value=&quot;0.9&quot;&gt;the absolute pressure
+&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass
+of an ideal gas is inversely proportional to the volume it
+occupies&lt;/tempo&gt;, if the temperature and amount of gas remain
 unchanged within a closed system.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/10b.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>10C</td>
-      <td>Definition slower at 0.8</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/10b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>10C</td>
+            <td>Definition slower at 0.8</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Boyle's law states, &lt;tempo value=&quot;0.8&quot;&gt;the absolute pressure 
-&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass 
-of an ideal gas is inversely proportional to the volume it 
-occupies&lt;/tempo&gt;, if the temperature and amount of gas remain 
+Boyle's law states, &lt;tempo value=&quot;0.8&quot;&gt;the absolute pressure
+&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass
+of an ideal gas is inversely proportional to the volume it
+occupies&lt;/tempo&gt;, if the temperature and amount of gas remain
 unchanged within a closed system.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/10c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>10D</td>
-      <td>Definition slower at 0.7</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/10c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>10D</td>
+            <td>Definition slower at 0.7</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Boyle's law states, &lt;tempo value=&quot;0.7&quot;&gt;the absolute pressure 
-&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass 
-of an ideal gas is inversely proportional to the volume it 
-occupies&lt;/tempo&gt;, if the temperature and amount of gas remain 
+Boyle's law states, &lt;tempo value=&quot;0.7&quot;&gt;the absolute pressure
+&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass
+of an ideal gas is inversely proportional to the volume it
+occupies&lt;/tempo&gt;, if the temperature and amount of gas remain
 unchanged within a closed system.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/10d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>10E</td>
-      <td>Definition slower at 0.6</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/10d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>10E</td>
+            <td>Definition slower at 0.6</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Boyle's law states, &lt;tempo value=&quot;0.6&quot;&gt;the absolute pressure 
-&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass 
-of an ideal gas is inversely proportional to the volume it 
-occupies&lt;/tempo&gt;, if the temperature and amount of gas remain 
+Boyle's law states, &lt;tempo value=&quot;0.6&quot;&gt;the absolute pressure
+&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass
+of an ideal gas is inversely proportional to the volume it
+occupies&lt;/tempo&gt;, if the temperature and amount of gas remain
 unchanged within a closed system.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/10e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>10F</td>
-      <td>Definition slowest user-facing pace at 0.5</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/10e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>10F</td>
+            <td>Definition slowest user-facing pace at 0.5</td>
+            <td>
+              <pre>
           <code class="language-xml">
-Boyle's law states, &lt;tempo value=&quot;0.5&quot;&gt;the absolute pressure 
-&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass 
-of an ideal gas is inversely proportional to the volume it 
-occupies&lt;/tempo&gt;, if the temperature and amount of gas remain 
+Boyle's law states, &lt;tempo value=&quot;0.5&quot;&gt;the absolute pressure
+&lt;respell value=&quot;ihg-ZUR-duhd&quot;&gt;exerted&lt;/respell&gt; by a given mass
+of an ideal gas is inversely proportional to the volume it
+occupies&lt;/tempo&gt;, if the temperature and amount of gas remain
 unchanged within a closed system.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/10f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
-</div>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/10f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
+  </div>
 
-<div class="container shadow p-5 mb-5 bg-white rounded">
-<h3>Unvoiced Annotations Samples<a id="Samples5"></a></h3>
-          <p>
-            Cues can be effectively applied to spaces and punctuation marks.
-          </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Unvoiced Annotations Samples<a id="Samples5"></a></h3>
+    <p>
+      Cues can be effectively applied to spaces and punctuation marks.
+    </p>
 
-<!--variation 2 Sample set code block start-->
-          <p><b>Sample set 11</b>
-            <br/>Speaker: Cameron S.
-            <br/>Style: Narration
-            <br/>Source speaker language & location: English, United States
-          </p>
-  
-      <div class="container pt-3 table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th width="5%"></th>
-              <th width="35%">Descriptor</th>
-              <th width="45%">Text Input</th>
-              <th width="20%">Audio Output</th>
-            </tr>
-          </thead> 
-          <tbody>
-            <tr>
-              <td>11A</td>
-              <td>No annotations</td>
-              <td>
-                <pre>
+    <!--variation 2 Sample set code block start-->
+    <p><b>Sample set 11</b>
+      <br />Speaker: Cameron S.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
+
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11A</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
                   <code class="language-xml">
 Let's pause, and take a moment to think.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
+            </td>
+            <td>
+              <audio controls>
                 <source src="Audio/11a.mp3" type="audio/mp3">
                 Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-            <tr>
-              <td>11B</td>
-              <td>Pause lengthened on a comma</td>
-              <td>
-                <pre>
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>11B</td>
+            <td>Pause lengthened on a comma</td>
+            <td>
+              <pre>
                   <code class="language-xml">
 Let's pause&lt;loudness value=&quot;-20&quot;&gt;&lt;tempo value=&quot;.18&quot;&gt;, &lt;/tempo&gt;
 &lt;/loudness&gt;and take a moment to think.</code>
                 </pre>
-              </td>
-              <td>
-                <audio controls>
+            </td>
+            <td>
+              <audio controls>
                 <source src="Audio/11b.mp3" type="audio/mp3">
                 Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <br />
-      </div>
-      <p>Speaker: Ali P.
-        <br/>Style: Narration
-        <br/>Source speaker language & location: English, Australia
-      </p>
-      <div class="container pt-3 table-responsive">
-      <table class="table align-middle">
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Ali P.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, Australia
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
         <thead>
           <tr>
-            <th width="5%"></th>
-            <th width="35%">Descriptor</th>
-            <th width="45%">Text Input</th>
-            <th width="20%">Audio Output</th>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
           </tr>
-        </thead> 
-      <tbody>
-        <tr>
-          <td>11C</td>
-          <td>No annotations</td>
-          <td>
-            <pre>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11C</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
               <code class="language-xml">
-Let's do a knowledge check. Which of the following options is 
+Let's do a knowledge check. Which of the following options is
 correct?</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/11c.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-        <tr>
-          <td>11D</td>
-          <td>Pause lengthened on a period</td>
-          <td>
-            <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>11D</td>
+            <td>Pause lengthened on a period</td>
+            <td>
+              <pre>
               <code class="language-xml">
 Let's do a knowledge check&lt;tempo value=“0.5”&gt;&lt;loudness value=
-&quot;-60&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;Which of the following options is 
+&quot;-60&quot;&gt;. &lt;/loudness&gt;&lt;/tempo&gt;Which of the following options is
 correct?</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/11d.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-      </tbody>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
       </table>
-    <br />
-  </div>
-  <p>Speaker: Joe F.
-    <br/>Style: Promo
-    <br/>Source speaker language & location: English, United States
-  </p>
-  <div class="container pt-3 table-responsive">
-  <table class="table align-middle">
-    <thead>
-      <tr>
-        <th width="5%"></th>
-        <th width="35%">Descriptor</th>
-        <th width="45%">Text Input</th>
-        <th width="20%">Audio Output</th>
-      </tr>
-    </thead>  
-  <tbody>
-    <tr>
-      <td>11E</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
+      <br />
+    </div>
+    <p>Speaker: Joe F.
+      <br />Style: Promo
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11E</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
           <code class="language-xml">
-In a town... with only one sheriff... and three tons of banana 
+In a town... with only one sheriff... and three tons of banana
 peels... who will win... and who will slip...</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/11e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>11F</td>
-      <td>Pauses lengthened on three periods</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>11F</td>
+            <td>Pauses lengthened on three periods</td>
+            <td>
+              <pre>
           <code class="language-xml">
 In a town&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo value=&quot;.2&quot;&gt;... &lt;/tempo&gt;
-&lt;/loudness&gt;with only one sheriff&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo 
-value=&quot;.2&quot;&gt;... &lt;/tempo&gt;&lt;/loudness&gt;and three tons of banana 
+&lt;/loudness&gt;with only one sheriff&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo
+value=&quot;.2&quot;&gt;... &lt;/tempo&gt;&lt;/loudness&gt;and three tons of banana
 peels&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo value=&quot;.2&quot;&gt;... &lt;/tempo&gt;
 &lt;/loudness&gt;who will win&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo value=&quot;.2&quot;&gt;
 ... &lt;/tempo&gt;&lt;/loudness&gt;and who will slip...</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/11f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>11G</td>
-      <td>Pauses slightly lengthened on three periods; final phrase slowed and quieted for dramatic effect</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>11G</td>
+            <td>Pauses slightly lengthened on three periods; final phrase slowed and quieted for dramatic effect</td>
+            <td>
+              <pre>
           <code class="language-xml">
 In a town&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo value=&quot;.45&quot;&gt;... &lt;/tempo&gt;
-&lt;/loudness&gt;with only one sheriff&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo 
-value=&quot;.45&quot;&gt;... &lt;/tempo&gt;&lt;/loudness&gt;and three tons of banana 
+&lt;/loudness&gt;with only one sheriff&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo
+value=&quot;.45&quot;&gt;... &lt;/tempo&gt;&lt;/loudness&gt;and three tons of banana
 peels&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo value=&quot;.45&quot;&gt;... &lt;/tempo&gt;
 &lt;/loudness&gt;who will win&lt;loudness value=&quot;-60&quot;&gt;&lt;tempo value=&quot;.6&quot;&gt;
 ... &lt;/tempo&gt;&lt;/loudness&gt;&lt;tempo value=&quot;0.7&quot;&gt;&lt;loudness value=&quot;-4&quot;&gt;
 and who will slip&lt;/loudness&gt;&lt;/tempo&gt;...</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/11g.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-  </table>
-<br />
-</div>
-<p>Speaker: Lulu G.
-  <br/>Style: Narration
-  <br/>Source speaker language & location: English, United States
-</p>
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>11H</td>
-    <td>No annotations</td>
-    <td>
-      <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11g.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Lulu G.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11H</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
         <code class="language-xml">
-Taxonomic characters are the taxonomic attributes that can be used 
-to provide the evidence from which the phylogeny between taxa are 
+Taxonomic characters are the taxonomic attributes that can be used
+to provide the evidence from which the phylogeny between taxa are
 inferred. Kinds of taxonomic characters include:
-Morphological 
-Physiological 
-Molecular 
-Behavioral 
-Ecological
-and Geographic characters</code>
-      </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/11h.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-  <tr>
-    <td>11I</td>
-    <td>Pause lenghtened on a colon</td>
-    <td>
-      <pre>
-        <code class="language-xml">
-Taxonomic characters are the taxonomic attributes that can be used 
-to provide the evidence from which the phylogeny between taxa are 
-inferred. Kinds of taxonomic characters include&lt;tempo 
-value=“0.2”&gt;&lt;loudness value=&quot;-60&quot;&gt;: &lt;/loudness&gt;&lt;/tempo&gt;
-Morphological 
+Morphological
 Physiological
 Molecular
 Behavioral
 Ecological
 and Geographic characters</code>
       </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/11i.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-</tbody>
-</table>
-<br />
-</div>
-</div>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11h.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>11I</td>
+            <td>Pause lenghtened on a colon</td>
+            <td>
+              <pre>
+        <code class="language-xml">
+Taxonomic characters are the taxonomic attributes that can be used
+to provide the evidence from which the phylogeny between taxa are
+inferred. Kinds of taxonomic characters include&lt;tempo
+value=“0.2”&gt;&lt;loudness value=&quot;-60&quot;&gt;: &lt;/loudness&gt;&lt;/tempo&gt;
+Morphological
+Physiological
+Molecular
+Behavioral
+Ecological
+and Geographic characters</code>
+      </pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/11i.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+  </div>
 
-<div class="container shadow p-5 mb-5 bg-white rounded">
-<h3>Annotation Generalization Samples<a id="Samples6"></a></h3>
-          <p>
-            Within cued performances, the model can push a target speaker’s performance 
-            range beyond what is present in the source speaker’s training data.
-            </p>
-          <p>In the following audio samples, we include maximum and minimum portions of 
-            the original gold dataset for loudness (LUFS) and tempo (CPS). These are presented 
-            in comparison to the synthetic voice outputs’ maximum and minimum performances for 
-            loudness and tempo.
-          </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Annotation Generalization Samples<a id="Samples6"></a></h3>
+    <p>
+      Within cued performances, the model can push a target speaker’s performance
+      range beyond what is present in the source speaker’s training data.
+    </p>
+    <p>In the following audio samples, we include maximum and minimum portions of
+      the original gold dataset for loudness (LUFS) and tempo (CPS). These are presented
+      in comparison to the synthetic voice outputs’ maximum and minimum performances for
+      loudness and tempo.
+    </p>
 
-<!--Sample set code block start-->
-<p><b>Sample set 12</b>
-  <br />Speaker: Lee M.
-  <br />Style: Narration
-  <br />Source speaker language & location: English, United States</p>
+    <!--Sample set code block start-->
+    <p><b>Sample set 12</b>
+      <br />Speaker: Lee M.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-<tbody>
-    <tr>
-      <td>12A</td>
-      <td>Source recording (gold): loudest voiced speech segment</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>12A</td>
+            <td>Source recording (gold): loudest voiced speech segment</td>
+            <td>
+              <pre>
           <code class="language-xml">
 cherry vanilla</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/12a.wav" type="audio/wav">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>12B</td>
-      <td>Synthetic voice at loudness 16</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12a.wav" type="audio/wav">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>12B</td>
+            <td>Synthetic voice at loudness 16</td>
+            <td>
+              <pre>
           <code class="language-xml">
 &lt;loudness value=&quot;16&quot;&gt;cherry vanilla&lt;/loudness&gt;</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/12b.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>12C</td>
-      <td>Source recording (gold): slowest voiced speech segment</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>12C</td>
+            <td>Source recording (gold): slowest voiced speech segment</td>
+            <td>
+              <pre>
           <code class="language-xml">
 By the holes in time and space</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/12c.wav" type="audio/wav">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>12D</td>
-      <td>Synthetic voice at pace 0.3</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12c.wav" type="audio/wav">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>12D</td>
+            <td>Synthetic voice at pace 0.3</td>
+            <td>
+              <pre>
           <code class="language-xml">
 &lt;tempo value=&quot;0.3&quot;&gt;By the holes in time and space&lt;/tempo&gt;</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/12d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
-<!--Sample set code block start-->
-  <br />Speaker: Jude D.
-  <br />Style: Narration
-  <br />Source speaker language & location: English, South Africa</p>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
+    <!--Sample set code block start-->
+    <br />Speaker: Jude D.
+    <br />Style: Narration
+    <br />Source speaker language & location: English, South Africa</p>
 
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead>
-<tbody>
-    <tr>
-      <td>12E</td>
-      <td>Source recording (gold): fastest voiced speech segment</td>
-      <td>
-        <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>12E</td>
+            <td>Source recording (gold): fastest voiced speech segment</td>
+            <td>
+              <pre>
           <code class="language-xml">
 could ever have ended.</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/12e.wav" type="audio/wav">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>12F</td>
-      <td>Synthetic voice at tempo 2.7</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12e.wav" type="audio/wav">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>12F</td>
+            <td>Synthetic voice at tempo 2.7</td>
+            <td>
+              <pre>
           <code class="language-xml">
 &lt;tempo value=“2.7”&gt;could ever have ended.&lt;/tempo&gt;</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-          <source src="Audio/12f.mp3" type="audio/mp3">
-          Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>12G</td>
-      <td>Source recording (gold): quietest voiced speech segment</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>12G</td>
+            <td>Source recording (gold): quietest voiced speech segment</td>
+            <td>
+              <pre>
           <code class="language-xml">
 during those first few hours</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/12g.wav" type="audio/wav">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>           
-    <tr>
-      <td>12H</td>
-      <td>Synthetic voice at loudness -50</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12g.wav" type="audio/wav">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>12H</td>
+            <td>Synthetic voice at loudness -50</td>
+            <td>
+              <pre>
           <code class="language-xml">
 &lt;loudness value=“-50”&gt;during those first few hours&lt;/loudness&gt;</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/12h.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br />
-</div>
-<!--Sample set code block end-->
-</div>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/12h.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <!--Sample set code block end-->
+  </div>
 
-<div class="container shadow p-5 mb-5 bg-white rounded">
-  <h3>Emergent Behaviors<a id="Samples3"></a></h3>
-      <p>
-        The model learns annotations in context, such that pronunciation and prosody are impacted 
-        by cues. This demonstrates the model's ability to generalize well. With subsequent training, 
-        this capability may become an emergent ability.
-      </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Emergent Behaviors<a id="Samples3"></a></h3>
+    <p>
+      The model learns annotations in context, such that pronunciation and prosody are impacted
+      by cues. This demonstrates the model's ability to generalize well. With subsequent training,
+      this capability may become an emergent ability.
+    </p>
 
-<!--variation 2 Sample set code block start-->
-      <p><b>Sample set 13</b>
-        <br/>Speaker: Damian P.
-        <br/>Style: Promo
-        <br/>Source speaker language & location: English, Canada
-      </p>
+    <!--variation 2 Sample set code block start-->
+    <p><b>Sample set 13</b>
+      <br />Speaker: Damian P.
+      <br />Style: Promo
+      <br />Source speaker language & location: English, Canada
+    </p>
 
-  <div class="container pt-3 table-responsive">
-    <table class="table align-middle">
-      <thead>
-        <tr>
-          <th width="5%"></th>
-          <th width="35%">Descriptor</th>
-          <th width="45%">Text Input</th>
-          <th width="20%">Audio Output</th>
-        </tr>
-      </thead>  
-      <tbody>
-        <tr>
-          <td>13A</td>
-          <td>Extreme slow + loud cues impact word-level prosody</td>
-          <td>
-            <pre>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>13A</td>
+            <td>Extreme slow + loud cues impact word-level prosody</td>
+            <td>
+              <pre>
               <code class="language-xml">
-Recent evidence suggests that the mammalian brain may avoid 
-&lt;loudness value=&quot;30&quot;&gt;&lt;tempo value=&quot;0.6&quot;&gt;catastrophic 
-forgetting&lt;/tempo&gt;&lt;/loudness&gt; by protecting previously acquired 
+Recent evidence suggests that the mammalian brain may avoid
+&lt;loudness value=&quot;30&quot;&gt;&lt;tempo value=&quot;0.6&quot;&gt;catastrophic
+forgetting&lt;/tempo&gt;&lt;/loudness&gt; by protecting previously acquired
 knowledge in neocortical circuits.</code>
             </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/13a.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br />
-  </div>
-  <p>Speaker: Fiona H.
-    <br/>Style: Narration
-    <br/>Source speaker language & location: English, United Kingdom
-  </p>
-  <div class="container pt-3 table-responsive">
-  <table class="table align-middle">
-    <thead>
-      <tr>
-        <th width="5%"></th>
-        <th width="35%">Descriptor</th>
-        <th width="45%">Text Input</th>
-        <th width="20%">Audio Output</th>
-      </tr>
-    </thead> 
-  <tbody>
-    <tr>
-      <td>13B</td>
-      <td>Extreme slow cue prompts word spelling</td>
-      <td>
-        <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13a.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Fiona H.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United Kingdom
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>13B</td>
+            <td>Extreme slow cue prompts word spelling</td>
+            <td>
+              <pre>
           <code class="language-xml">
 What happens if I slow down the word &lt;tempo value=&quot;0.2&quot;&gt;umbrella
 &lt;/tempo&gt; in this sentence?</code>
         </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/13b.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-  </table>
-<br />
-</div>
-<p>Speaker: Se’Von M.
-<br/>Style: Narration
-<br/>Source speaker language & location: English, United States
-</p>
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-<thead>
-  <tr>
-    <th width="5%"></th>
-    <th width="35%">Descriptor</th>
-    <th width="45%">Text Input</th>
-    <th width="20%">Audio Output</th>
-  </tr>
-</thead> 
-<tbody>
-<tr>
-  <td>13C</td>
-  <td>No annotations</td>
-  <td>
-    <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13b.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Se’Von M.
+      <br />Style: Narration
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>13C</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
       <code class="language-xml">
 do</code>
     </pre>
-  </td>
-  <td>
-    <audio controls>
-    <source src="Audio/13c.mp3" type="audio/mp3">
-    Your browser does not support the audio tag.
-    </audio>
-  </td>
-</tr>
-<tr>
-  <td>13D</td>
-  <td>Extreme slow cue prompts word spelling</td>
-  <td>
-    <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13c.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>13D</td>
+            <td>Extreme slow cue prompts word spelling</td>
+            <td>
+              <pre>
       <code class="language-xml">
 &lt;tempo value=&quot;0.3&quot;&gt;do&lt;/tempo&gt;</code>
     </pre>
-  </td>
-  <td>
-    <audio controls>
-    <source src="Audio/13d.mp3" type="audio/mp3">
-    Your browser does not support the audio tag.
-    </audio>
-  </td>
-</tr>
-<tr>
-  <td>13E</td>
-  <td>No annotations</td>
-  <td>
-    <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13d.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>13E</td>
+            <td>No annotations</td>
+            <td>
+              <pre>
       <code class="language-xml">
 all</code>
     </pre>
-  </td>
-  <td>
-    <audio controls>
-    <source src="Audio/13e.mp3" type="audio/mp3">
-    Your browser does not support the audio tag.
-    </audio>
-  </td>
-</tr>
-<tr>
-  <td>13F</td>
-  <td>Extreme slow cue prompts word spelling</td>
-  <td>
-    <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13e.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>13F</td>
+            <td>Extreme slow cue prompts word spelling</td>
+            <td>
+              <pre>
       <code class="language-xml">
 &lt;tempo value=&quot;0.26&quot;&gt;all&lt;/tempo&gt;</code>
     </pre>
-  </td>
-  <td>
-    <audio controls>
-    <source src="Audio/13f.mp3" type="audio/mp3">
-    Your browser does not support the audio tag.
-    </audio>
-  </td>
-</tr>
-</tbody>
-</table>
-<br />
-</div>
-<p>Speaker: Genevieve M.
-<br/>Style: Promo
-<br/>Source speaker language & location: English, United States
-</p>
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-<thead>
-<tr>
-  <th width="5%"></th>
-  <th width="35%">Descriptor</th>
-  <th width="45%">Text Input</th>
-  <th width="20%">Audio Output</th>
-</tr>
-</thead> 
-<tbody>
-<tr>
-<td>13G</td>
-<td>Fast cue within user range prompts fast word delivery</td>
-<td>
-  <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13f.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <p>Speaker: Genevieve M.
+      <br />Style: Promo
+      <br />Source speaker language & location: English, United States
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table align-middle samples-table">
+        <thead>
+          <tr>
+            <th class="col-index"></th>
+            <th class="col-descriptor">Descriptor</th>
+            <th class="col-text-input">Text Input</th>
+            <th class="col-audio-output">Audio Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>13G</td>
+            <td>Fast cue within user range prompts fast word delivery</td>
+            <td>
+              <pre>
     <code class="language-xml">
 &lt;tempo value=&quot;3&quot;&gt;content&lt;/tempo&gt;</code>
   </pre>
-</td>
-<td>
-  <audio controls>
-  <source src="Audio/13g.mp3" type="audio/mp3">
-  Your browser does not support the audio tag.
-  </audio>
-</td>
-</tr>
-<tr>
-<td>13H</td>
-<td>Extreme slow cue prompts word spelling</td>
-<td>
-  <pre>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13g.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+          <tr>
+            <td>13H</td>
+            <td>Extreme slow cue prompts word spelling</td>
+            <td>
+              <pre>
     <code class="language-xml">
 &lt;tempo value=&quot;0.3&quot;&gt;content&lt;/tempo&gt;</code>
   </pre>
-</td>
-<td>
-  <audio controls>
-  <source src="Audio/13h.mp3" type="audio/mp3">
-  Your browser does not support the audio tag.
-  </audio>
-</td>
-</tr>
-</tbody>
-</table>
-<br />
-</div>
-</div>
-
-<div class="container shadow p-5 mb-5 bg-white rounded">
-  <h3>Future State<a id="future"/></h3>
-  <p>
-    We have shown that the annotation mapping network generalizes 
-    well and is context sensitive, supporting diverse input variability and an expansive annotation range.
-    This framework can be quickly expanded with additional annotations such as pitch, brightness, fullness, range, and breath 
-    control, in near future releases. 
-  </p>
-  <p>We have already prototyped a pitch annotation:<br />
-    <i>[audio sample]</i>
-  </p>
-  <p>
-    With additional training, more data, and subsequent model improvements, we are excited for the creative applications of this 
-    approach.
-  </p>
-</div>
-
-<div class="container shadow p-5 mb-5 bg-white rounded">
-      <h3>Ethical Responsibility<a id="EthicalResponsibility"/></h3>
-      <p>
-        Our commitment to the principles of Responsible AI informed the practices and approaches we used for this work. 
-        Specifically, we leaned on the principles of accountability, transparency, and privacy & security. 
-      </p>
-      <p>
-        The tenets of <b>accountability</b> and <b>transparency</b> are reflected in our requirement that we have the explicit, informed consent 
-        of any individual who records voice datasets for WellSaid Labs. End users can only access target speakers built from datasets 
-        recorded by voice talent who have provided consent for end-user access. Additionally, annotations do not provide a means for 
-        end users to guide the model into a different target speaker’s solution space. We limit the collection of data from other providers 
-        to those that are open source (e.g., LibriSpeech), and voices we create using that open source data are not available to our users. 
-      </p>
-      <p>The principle of <b>privacy & security</b> drives us to design our systems so that we can protect the privacy of our users and participants who 
-        provide us with their voice datasets, and reduce opportunities for data or voice avatars to be misused. Our Trust & Safety team ensures 
-        that all users undergo identity verification when creating an account, and content created on our platform is subject to robust content 
-        moderation, limiting the creation and release of content that does not align with our Terms of Service.
-      </p>
+            </td>
+            <td>
+              <audio controls>
+                <source src="Audio/13h.mp3" type="audio/mp3">
+                Your browser does not support the audio tag.
+              </audio>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <br />
-</div>
-  
-    <div class="container shadow p-5 mb-5 bg-white rounded">
-      <h3>Baseline Evaluation<a id="header1"/></h3>
-      <p>
-        We listened to 1700+ audio samples to evaluate the occurrence of common issues in text-to-speech sequence-to-sequence attention models.
-      </p>
-      <div class="container pt-3 table-responsive">
-        <table
-          class="table table-hover"
-          id="example-table-3"
-        >
-          <thead>
-            <tr>
-              <th width="35%">Metric</th>
-              <th width="20%">Interpretation</th>
-              <th width="15%">Goal</th>
-              <th width="15%">WSL Baseline<br />Model</th>
-              <th width="15%">WSL New<br />Model</th>
-            </tr>
-          </thead>
-          <tbody>
-             </tr>
-             <tr> <td>Initialism Pronunciation</td> <td>% correct</td> <td>100%</td> <td>86.27%</td> <td><b>94.12%</b></td> </tr>
-             <tr> <td>Question Intonation (Rising)</td> <td>% correct</td> <td>100%</td> <td>30.83%</td> <td><b>38.33%</b></td> </tr>
-             <tr> <td>100 Words Pronunciation</td> <td>% correct</td> <td>100%</td> <td>94.13%</td> <td><b>94.58%</b></td> </tr>
-             <tr> <td>Slurring</td> <td>% occurring</td> <td>0%</td> <td><b>0.00%</b></td> <td>0.67%</td> </tr>
-             <tr> <td>Word Cutoff</td> <td>% occurring</td> <td>0%</td> <td><b>0.00%</b></td> <td>0.67%</td> </tr>
-             <tr> <td>Word Skip</td> <td>% occurring</td> <td>0%</td> <td>0.67%</td> <td><b>0.67%</b></td> </tr>
-             <tr> <td>Speaker-Swapping</td> <td>% occurring</td> <td>0%</td> <td>0%</td> <td><b>0%</b></td> </tr>
-             <tr> <td>Loudness Inconsistency Across Clip</td> <td>% occurring</td> <td>0%</td> <td>~0%</td> <td><b>~0%</b></td> </tr>
-             <tr> <td>Latency</td> <td>seconds</td> <td>decreasing</td> <td>0.5s</td> <td><b>0.5s</b></td> </tr>
-             <tr> <td>Target Speakers</td> <td>total #</td> <td>increasing</td> <td><b>126</b></td> <td>106</td> </tr>
-             <tr> <td>Dataset</td> <td># hours</td> <td>increasing</td> <td><b>560 hours</b></td> <td>530 hours</td> </tr>
-          </tbody>
-        </table>
-        <p><b>Note.</b> During development, we noted that extreme annotation values force the model’s latent state representing 
-          one speaker into that of another. The net effect is that the model produces audio using a speaker other than the target 
-          speaker. Prior to releasing WSL New to users, we implemented per-speaker cue value limitations to specific ranges within  
-          which speaker swapping does not occur.</p>
-          <br />
-      </div>
     </div>
+  </div>
 
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Future State<a id="future" /></h3>
+    <p>
+      We have shown that the annotation mapping network generalizes
+      well and is context sensitive, supporting diverse input variability and an expansive annotation range.
+      This framework can be quickly expanded with additional annotations such as pitch, brightness, fullness, range, and
+      breath
+      control, in near future releases.
+    </p>
+    <p>We have already prototyped a pitch annotation:<br />
+      <i>[audio sample]</i>
+    </p>
+    <p>
+      With additional training, more data, and subsequent model improvements, we are excited for the creative
+      applications of this
+      approach.
+    </p>
+  </div>
 
-    
-    <div class="container shadow p-5 mb-5 bg-white rounded">
-      <h5>Acknowledgments</h5>
-        <p>
-          <b>Contributors.</b> Michael Petrochuk; Sara Weisweaver; Rhyan Johnson; Jordan Hoskins; Sarah Fairweather; 
-          Courtney Mathy; Alecia Murray; Alison Ma; Daniel “Dandie” Swain, Jr.; Jon Delgado; Jessica Petrochuk
-        </p>
-        <p>A special thank you to the voice talent that make our avatars possible, especially those featured in this 
-          paper: Alan T., Ali P., Ben D., Cameron S., Damian P., Fiona H., Garry J., Genevieve M., Joe F., Jordan T., 
-          Jude D., Lee M., Lulu G., Michael V., Paige L., Paul B., Ramona J., Se’Von M., Sofia H., Terra G., and Zach E.
-        </p>
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Ethical Responsibility<a id="EthicalResponsibility" /></h3>
+    <p>
+      Our commitment to the principles of Responsible AI informed the practices and approaches we used for this work.
+      Specifically, we leaned on the principles of accountability, transparency, and privacy & security.
+    </p>
+    <p>
+      The tenets of <b>accountability</b> and <b>transparency</b> are reflected in our requirement that we have the
+      explicit, informed consent
+      of any individual who records voice datasets for WellSaid Labs. End users can only access target speakers built
+      from datasets
+      recorded by voice talent who have provided consent for end-user access. Additionally, annotations do not provide a
+      means for
+      end users to guide the model into a different target speaker’s solution space. We limit the collection of data
+      from other providers
+      to those that are open source (e.g., LibriSpeech), and voices we create using that open source data are not
+      available to our users.
+    </p>
+    <p>The principle of <b>privacy & security</b> drives us to design our systems so that we can protect the privacy of
+      our users and participants who
+      provide us with their voice datasets, and reduce opportunities for data or voice avatars to be misused. Our Trust
+      & Safety team ensures
+      that all users undergo identity verification when creating an account, and content created on our platform is
+      subject to robust content
+      moderation, limiting the creation and release of content that does not align with our Terms of Service.
+    </p>
+    <br />
+  </div>
+
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h3>Baseline Evaluation<a id="header1" /></h3>
+    <p>
+      We listened to 1700+ audio samples to evaluate the occurrence of common issues in text-to-speech
+      sequence-to-sequence attention models.
+    </p>
+    <div class="container pt-3 table-responsive">
+      <table class="table table-hover" id="example-table-3">
+        <thead>
+          <tr>
+            <th width="35%">Metric</th>
+            <th width="20%">Interpretation</th>
+            <th width="15%">Goal</th>
+            <th width="15%">WSL Baseline<br />Model</th>
+            <th width="15%">WSL New<br />Model</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tr>
+          <tr>
+            <td>Initialism Pronunciation</td>
+            <td>% correct</td>
+            <td>100%</td>
+            <td>86.27%</td>
+            <td><b>94.12%</b></td>
+          </tr>
+          <tr>
+            <td>Question Intonation (Rising)</td>
+            <td>% correct</td>
+            <td>100%</td>
+            <td>30.83%</td>
+            <td><b>38.33%</b></td>
+          </tr>
+          <tr>
+            <td>100 Words Pronunciation</td>
+            <td>% correct</td>
+            <td>100%</td>
+            <td>94.13%</td>
+            <td><b>94.58%</b></td>
+          </tr>
+          <tr>
+            <td>Slurring</td>
+            <td>% occurring</td>
+            <td>0%</td>
+            <td><b>0.00%</b></td>
+            <td>0.67%</td>
+          </tr>
+          <tr>
+            <td>Word Cutoff</td>
+            <td>% occurring</td>
+            <td>0%</td>
+            <td><b>0.00%</b></td>
+            <td>0.67%</td>
+          </tr>
+          <tr>
+            <td>Word Skip</td>
+            <td>% occurring</td>
+            <td>0%</td>
+            <td>0.67%</td>
+            <td><b>0.67%</b></td>
+          </tr>
+          <tr>
+            <td>Speaker-Swapping</td>
+            <td>% occurring</td>
+            <td>0%</td>
+            <td>0%</td>
+            <td><b>0%</b></td>
+          </tr>
+          <tr>
+            <td>Loudness Inconsistency Across Clip</td>
+            <td>% occurring</td>
+            <td>0%</td>
+            <td>~0%</td>
+            <td><b>~0%</b></td>
+          </tr>
+          <tr>
+            <td>Latency</td>
+            <td>seconds</td>
+            <td>decreasing</td>
+            <td>0.5s</td>
+            <td><b>0.5s</b></td>
+          </tr>
+          <tr>
+            <td>Target Speakers</td>
+            <td>total #</td>
+            <td>increasing</td>
+            <td><b>126</b></td>
+            <td>106</td>
+          </tr>
+          <tr>
+            <td>Dataset</td>
+            <td># hours</td>
+            <td>increasing</td>
+            <td><b>560 hours</b></td>
+            <td>530 hours</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><b>Note.</b> During development, we noted that extreme annotation values force the model’s latent state
+        representing
+        one speaker into that of another. The net effect is that the model produces audio using a speaker other than the
+        target
+        speaker. Prior to releasing WSL New to users, we implemented per-speaker cue value limitations to specific
+        ranges within
+        which speaker swapping does not occur.</p>
       <br />
-      <h5>Footnotes</h5>
+    </div>
+  </div>
+
+
+
+  <div class="container shadow p-5 mb-5 bg-white rounded">
+    <h5>Acknowledgments</h5>
+    <p>
+      <b>Contributors.</b> Michael Petrochuk; Sara Weisweaver; Rhyan Johnson; Jordan Hoskins; Sarah Fairweather;
+      Courtney Mathy; Alecia Murray; Alison Ma; Daniel “Dandie” Swain, Jr.; Jon Delgado; Jessica Petrochuk
+    </p>
+    <p>A special thank you to the voice talent that make our avatars possible, especially those featured in this
+      paper: Alan T., Ali P., Ben D., Cameron S., Damian P., Fiona H., Garry J., Genevieve M., Joe F., Jordan T.,
+      Jude D., Lee M., Lulu G., Michael V., Paige L., Paul B., Ramona J., Se’Von M., Sofia H., Terra G., and Zach E.
+    </p>
+    <br />
+    <h5>Footnotes</h5>
     <ul class="list-inline">
       <li class="list-inline-item">
         <dl>
           <dt id="note1" style="display: inline;">1</dt>
-          <dd style="display: inline;">Authors are ordered by the number of letters in their first name (<a href="#ref1">take me back</a>)</dd>
+          <dd style="display: inline;">Authors are ordered by the number of letters in their first name (<a
+              href="#ref1">take me back</a>)</dd>
         </dl>
       </li>
     </ul>
-    
+
     <ul class="list-inline">
       <li class="list-inline-item">
         <dl>
@@ -2165,13 +2291,14 @@ all</code>
         </dl>
       </li>
     </ul>
-    </div>
+  </div>
 
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
-  </body>
+</body>
+
 </html>
