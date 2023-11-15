@@ -100,7 +100,7 @@
     </div>
 
     <div class="container shadow p-5 mb-5 bg-white rounded">
-        <h3>Range and Diversity Samples<a id="samples1"></a></h3>
+        <h3>Range and Diversity<a id="samples1"></a></h3>
           <p>
             In a novel approach, we use annotations alone to successfully guide the model into comprehensive possible points in the solution space for a single target
           speaker using the same sample script.
@@ -590,7 +590,7 @@ wrong&lt;/loudness&gt;&lt;/tempo&gt;.</code>
 </div>
 
 <div class="container shadow p-5 mb-5 bg-white rounded">
-      <h3>Input Variability Samples<a id="Samples2"></a></h3>
+      <h3>Robustness<a id="Samples2"></a></h3>
           <p>
             The model responds intuitively to a variety of inputs: various cue and text lengths, various annotation combinations, and various nesting patterns.
           </p>
@@ -737,7 +737,8 @@ value=&quot;4&quot;&gt;of icy cool&lt;/loudness&gt;&lt;/tempo&gt; refreshment.</
 </table>
 <br />
 </div>
-<p>Speaker: Lulu G.
+<p><b>Sample set 6</b>
+  <br/>Speaker: Lulu G.
   <br/>Style: Narration
   <br/>Source speaker language & location: English, United States
 </p>
@@ -751,41 +752,96 @@ value=&quot;4&quot;&gt;of icy cool&lt;/loudness&gt;&lt;/tempo&gt; refreshment.</
       <th width="20%">Audio Output</th>
     </tr>
   </thead>
-  <tobdy>
+  <tbody>
   <tr>
-    <td>5D</td>
-    <td>4200 characters generated in a single take with second to last paragraph annotated (cued text begins at 2:38)</td>
-    <td>
-      <pre>
+      <td>6A</td>
+      <td>4239 characters generated in a single take with no annotations and no degradation</td>
+      <td><pre>
         <code class="language-xml">
-Key Tips for Transitioning to Assisted Living
-When your loved one has lived in their own home for years, 
-transitioning to an assisted living community can be 
-intimidating... 
-...
-# Full script has been truncated here; annotated text begins at 2:38
-...
-Pack deliberately. 
-&lt;tempo value=“0.7”&gt;&lt;loudness value=&quot;4&quot;&gt;First and foremost, check 
-with your community to see if they offer packing services. Getting 
-help with this process will go a long way in smoothing the 
-transition to assisted living. When packing, prioritize the most 
-important items first, and don’t stress about doing everything 
-right away. We recommend creating lists to keep the process 
-organized and save time. Start with essential items like 
-toiletries, medications, clothing, bedding and furniture. After the 
-big things are taken care of, move onto smaller items that may 
-still be important but are stuffed away in the garage or attic. If 
-you approach packing in a step-by-step manner, without rushing it, 
-the task becomes far less intimidating.&lt;/loudness&gt;&lt;/tempo&gt;
-Take care of loose ends... 
-...Last but not least, keep a record of all moving expenses—they are 
-tax deductible!</code>
+8-track cartridge.
+From Wikipedia, the free encyclopedia.
+
+The 8-track tape is a magnetic-tape sound-recording technology that 
+was popular from the mid-1960s to the early 1980s, when the compact 
+cassette, which pre-dated the 8-track system, surpassed it in 
+popularity for pre-recorded music.
+
+# Full script has been truncated here
+
+In the U.S., eight-track cartridges were phased out of retail stores 
+in late 1982 and early 1983. However, some titles were still available 
+as eight-track tapes through Columbia House and RCA Music Service 
+Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation) 
+continued to sell blank eight-track cartridges and players for home 
+recording use under its Realistic brand.</code>
       </pre>
     </td>
     <td>
       <audio controls>
-      <source src="Audio/5d.mp3" type="audio/mp3">
+      <source src="Audio/6A.mp3" type="audio/mp3">
+      Your browser does not support the audio tag.
+      </audio>
+    </td>
+  </tr>
+  <tr>
+    <td>6B</td>
+    <td>4239 characters generated in a single take with second to last paragraph annotated. The model shows no degradation 
+      in the annotated portion, and resumes normal loudness and tempo for the final paragraph.</td>
+    <td>
+      <pre>
+        <code class="language-xml">
+8-track cartridge.
+From Wikipedia, the free encyclopedia.
+
+The 8-track tape is a magnetic-tape sound-recording technology...
+
+# Full script has been truncated here; audio starts at 3:53
+
+&lt;tempo value="0.6"&gt;&lt;loudness value="4"&gt;1978 was the peak year 
+for 8-track sales in the United States, with sales declining rapidly 
+from then on. Eight-track players became less common in homes and vehicles 
+in the late 1970s. The compact cassette had arrived in 1963&lt;/loudness&gt;
+&lt;/tempo&gt;.
+
+In the U.S., eight-track cartridges were phased out of retail stores 
+in late 1982 and early 1983. However, some titles were still available 
+as eight-track tapes through Columbia House and RCA Music Service 
+Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation) 
+continued to sell blank eight-track cartridges and players for home 
+recording use under its Realistic brand.</code>
+      </pre>
+    </td>
+    <td>
+      <audio controls>
+      <source src="Audio/6B.mp3" type="audio/mp3">
+      Your browser does not support the audio tag.
+      </audio>
+    </td>
+  </tr>
+  <tr>
+    <td>6C</td>
+    <td>4239 characters generated in a single take with entire passage annotated and no degradation.</td>
+    <td>
+      <pre>
+        <code class="language-xml">
+&lt;tempo value="1.4"&gt;&lt;loudness value="-2"&gt;8-track cartridge.
+From Wikipedia, the free encyclopedia.
+
+The 8-track tape is a magnetic-tape sound-recording technology...
+
+# Full script has been truncated here
+
+In the U.S., eight-track cartridges were phased out of retail stores 
+in late 1982 and early 1983. However, some titles were still available 
+as eight-track tapes through Columbia House and RCA Music Service 
+Record Clubs until late 1988. Until 1990, Radio Shack (Tandy Corporation) 
+continued to sell blank eight-track cartridges and players for home 
+recording use under its Realistic brand&lt;/loudness&gt;&lt;/tempo&gt;.</code>
+      </pre>
+    </td>
+    <td>
+      <audio controls>
+      <source src="Audio/6C.mp3" type="audio/mp3">
       Your browser does not support the audio tag.
       </audio>
     </td>
@@ -797,226 +853,7 @@ tax deductible!</code>
 </div>
 
 <div class="container shadow p-5 mb-5 bg-white rounded">
-      <h3>Pronunciation Sensitivity to Annotations Samples<a id="Samples3"></a></h3>
-          <p>
-            The model learns annotations in context, such that pronunciation and enunciation are impacted by cues.
-          </p>
-
-<!--variation 2 Sample set code block start-->
-          <p><b>Sample set 6</b>
-            <br/>Speaker: Damian P.
-            <br/>Style: Promo
-            <br/>Source speaker language & location: English, Canada
-          </p>
-  
-      <div class="container pt-3 table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th width="5%"></th>
-              <th width="35%">Descriptor</th>
-              <th width="45%">Text Input</th>
-              <th width="20%">Audio Output</th>
-            </tr>
-          </thead>  
-          <tbody>
-            <tr>
-              <td>6A</td>
-              <td>Extreme slow + loud cues impact word-level prosody</td>
-              <td>
-                <pre>
-                  <code class="language-xml">
-Recent evidence suggests that the mammalian brain may avoid 
-&lt;loudness value=&quot;30&quot;&gt;&lt;tempo value=&quot;0.6&quot;&gt;catastrophic 
-forgetting&lt;/tempo&gt;&lt;/loudness&gt; by protecting previously acquired 
-knowledge in neocortical circuits.</code>
-                </pre>
-              </td>
-              <td>
-                <audio controls>
-                <source src="Audio/6a.mp3" type="audio/mp3">
-                Your browser does not support the audio tag.
-                </audio>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <br />
-      </div>
-      <p>Speaker: Fiona H.
-        <br/>Style: Narration
-        <br/>Source speaker language & location: English, United Kingdom
-      </p>
-      <div class="container pt-3 table-responsive">
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th width="5%"></th>
-            <th width="35%">Descriptor</th>
-            <th width="45%">Text Input</th>
-            <th width="20%">Audio Output</th>
-          </tr>
-        </thead> 
-      <tbody>
-        <tr>
-          <td>6B</td>
-          <td>Extreme slow cue prompts word spelling</td>
-          <td>
-            <pre>
-              <code class="language-xml">
-What happens if I slow down the word &lt;tempo value=&quot;0.2&quot;&gt;umbrella
-&lt;/tempo&gt; in this sentence?</code>
-            </pre>
-          </td>
-          <td>
-            <audio controls>
-            <source src="Audio/6b.mp3" type="audio/mp3">
-            Your browser does not support the audio tag.
-            </audio>
-          </td>
-        </tr>
-      </tbody>
-      </table>
-    <br />
-  </div>
-  <p>Speaker: Se’Von M.
-    <br/>Style: Narration
-    <br/>Source speaker language & location: English, United States
-  </p>
-  <div class="container pt-3 table-responsive">
-  <table class="table align-middle">
-    <thead>
-      <tr>
-        <th width="5%"></th>
-        <th width="35%">Descriptor</th>
-        <th width="45%">Text Input</th>
-        <th width="20%">Audio Output</th>
-      </tr>
-    </thead> 
-  <tbody>
-    <tr>
-      <td>6C</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
-          <code class="language-xml">
-do</code>
-        </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/6c.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>6D</td>
-      <td>Extreme slow cue prompts word spelling</td>
-      <td>
-        <pre>
-          <code class="language-xml">
-&lt;tempo value=&quot;0.3&quot;&gt;do&lt;/tempo&gt;</code>
-        </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/6d.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>6E</td>
-      <td>No annotations</td>
-      <td>
-        <pre>
-          <code class="language-xml">
-all</code>
-        </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/6e.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-    <tr>
-      <td>6F</td>
-      <td>Extreme slow cue prompts word spelling</td>
-      <td>
-        <pre>
-          <code class="language-xml">
-&lt;tempo value=&quot;0.26&quot;&gt;all&lt;/tempo&gt;</code>
-        </pre>
-      </td>
-      <td>
-        <audio controls>
-        <source src="Audio/6f.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-  </table>
-<br />
-</div>
-<p>Speaker: Genevieve M.
-  <br/>Style: Promo
-  <br/>Source speaker language & location: English, United States
-</p>
-<div class="container pt-3 table-responsive">
-<table class="table align-middle">
-  <thead>
-    <tr>
-      <th width="5%"></th>
-      <th width="35%">Descriptor</th>
-      <th width="45%">Text Input</th>
-      <th width="20%">Audio Output</th>
-    </tr>
-  </thead> 
-  <tbody>
-  <tr>
-    <td>6G</td>
-    <td>Fast cue within user range prompts fast word delivery</td>
-    <td>
-      <pre>
-        <code class="language-xml">
-&lt;tempo value=&quot;3&quot;&gt;content&lt;/tempo&gt;</code>
-      </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/6g.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-  <tr>
-    <td>6H</td>
-    <td>Extreme slow cue prompts word spelling</td>
-    <td>
-      <pre>
-        <code class="language-xml">
-&lt;tempo value=&quot;0.3&quot;&gt;content&lt;/tempo&gt;</code>
-      </pre>
-    </td>
-    <td>
-      <audio controls>
-      <source src="Audio/6h.mp3" type="audio/mp3">
-      Your browser does not support the audio tag.
-      </audio>
-    </td>
-  </tr>
-</tbody>
-</table>
-<br />
-</div>
-</div>
-
-<div class="container shadow p-5 mb-5 bg-white rounded">
-<h3>Interpolation Samples<a id="Samples4"></a></h3>
+<h3>Interpolation<a id="Samples4"></a></h3>
           <p>
             The model can generate audio between a range of annotation values, allowing for precise control.
           </p>
@@ -1992,6 +1829,227 @@ during those first few hours</code>
 <br />
 </div>
 <!--Sample set code block end-->
+</div>
+
+<div class="container shadow p-5 mb-5 bg-white rounded">
+  <h3>Emergent Behaviors<a id="Samples3"></a></h3>
+      <p>
+        The model learns annotations in context, such that pronunciation and prosody are impacted 
+        by cues. This demonstrates the model's ability to generalize well. With subsequent training, 
+        this capability may become an emergent ability.
+      </p>
+
+<!--variation 2 Sample set code block start-->
+      <p><b>Sample set 13</b>
+        <br/>Speaker: Damian P.
+        <br/>Style: Promo
+        <br/>Source speaker language & location: English, Canada
+      </p>
+
+  <div class="container pt-3 table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th width="5%"></th>
+          <th width="35%">Descriptor</th>
+          <th width="45%">Text Input</th>
+          <th width="20%">Audio Output</th>
+        </tr>
+      </thead>  
+      <tbody>
+        <tr>
+          <td>13A</td>
+          <td>Extreme slow + loud cues impact word-level prosody</td>
+          <td>
+            <pre>
+              <code class="language-xml">
+Recent evidence suggests that the mammalian brain may avoid 
+&lt;loudness value=&quot;30&quot;&gt;&lt;tempo value=&quot;0.6&quot;&gt;catastrophic 
+forgetting&lt;/tempo&gt;&lt;/loudness&gt; by protecting previously acquired 
+knowledge in neocortical circuits.</code>
+            </pre>
+          </td>
+          <td>
+            <audio controls>
+            <source src="Audio/13a.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+            </audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+  </div>
+  <p>Speaker: Fiona H.
+    <br/>Style: Narration
+    <br/>Source speaker language & location: English, United Kingdom
+  </p>
+  <div class="container pt-3 table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th width="5%"></th>
+        <th width="35%">Descriptor</th>
+        <th width="45%">Text Input</th>
+        <th width="20%">Audio Output</th>
+      </tr>
+    </thead> 
+  <tbody>
+    <tr>
+      <td>13B</td>
+      <td>Extreme slow cue prompts word spelling</td>
+      <td>
+        <pre>
+          <code class="language-xml">
+What happens if I slow down the word &lt;tempo value=&quot;0.2&quot;&gt;umbrella
+&lt;/tempo&gt; in this sentence?</code>
+        </pre>
+      </td>
+      <td>
+        <audio controls>
+        <source src="Audio/13b.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+        </audio>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+<br />
+</div>
+<p>Speaker: Se’Von M.
+<br/>Style: Narration
+<br/>Source speaker language & location: English, United States
+</p>
+<div class="container pt-3 table-responsive">
+<table class="table align-middle">
+<thead>
+  <tr>
+    <th width="5%"></th>
+    <th width="35%">Descriptor</th>
+    <th width="45%">Text Input</th>
+    <th width="20%">Audio Output</th>
+  </tr>
+</thead> 
+<tbody>
+<tr>
+  <td>13C</td>
+  <td>No annotations</td>
+  <td>
+    <pre>
+      <code class="language-xml">
+do</code>
+    </pre>
+  </td>
+  <td>
+    <audio controls>
+    <source src="Audio/13c.mp3" type="audio/mp3">
+    Your browser does not support the audio tag.
+    </audio>
+  </td>
+</tr>
+<tr>
+  <td>13D</td>
+  <td>Extreme slow cue prompts word spelling</td>
+  <td>
+    <pre>
+      <code class="language-xml">
+&lt;tempo value=&quot;0.3&quot;&gt;do&lt;/tempo&gt;</code>
+    </pre>
+  </td>
+  <td>
+    <audio controls>
+    <source src="Audio/13d.mp3" type="audio/mp3">
+    Your browser does not support the audio tag.
+    </audio>
+  </td>
+</tr>
+<tr>
+  <td>13E</td>
+  <td>No annotations</td>
+  <td>
+    <pre>
+      <code class="language-xml">
+all</code>
+    </pre>
+  </td>
+  <td>
+    <audio controls>
+    <source src="Audio/13e.mp3" type="audio/mp3">
+    Your browser does not support the audio tag.
+    </audio>
+  </td>
+</tr>
+<tr>
+  <td>13F</td>
+  <td>Extreme slow cue prompts word spelling</td>
+  <td>
+    <pre>
+      <code class="language-xml">
+&lt;tempo value=&quot;0.26&quot;&gt;all&lt;/tempo&gt;</code>
+    </pre>
+  </td>
+  <td>
+    <audio controls>
+    <source src="Audio/13f.mp3" type="audio/mp3">
+    Your browser does not support the audio tag.
+    </audio>
+  </td>
+</tr>
+</tbody>
+</table>
+<br />
+</div>
+<p>Speaker: Genevieve M.
+<br/>Style: Promo
+<br/>Source speaker language & location: English, United States
+</p>
+<div class="container pt-3 table-responsive">
+<table class="table align-middle">
+<thead>
+<tr>
+  <th width="5%"></th>
+  <th width="35%">Descriptor</th>
+  <th width="45%">Text Input</th>
+  <th width="20%">Audio Output</th>
+</tr>
+</thead> 
+<tbody>
+<tr>
+<td>13G</td>
+<td>Fast cue within user range prompts fast word delivery</td>
+<td>
+  <pre>
+    <code class="language-xml">
+&lt;tempo value=&quot;3&quot;&gt;content&lt;/tempo&gt;</code>
+  </pre>
+</td>
+<td>
+  <audio controls>
+  <source src="Audio/13g.mp3" type="audio/mp3">
+  Your browser does not support the audio tag.
+  </audio>
+</td>
+</tr>
+<tr>
+<td>13H</td>
+<td>Extreme slow cue prompts word spelling</td>
+<td>
+  <pre>
+    <code class="language-xml">
+&lt;tempo value=&quot;0.3&quot;&gt;content&lt;/tempo&gt;</code>
+  </pre>
+</td>
+<td>
+  <audio controls>
+  <source src="Audio/13h.mp3" type="audio/mp3">
+  Your browser does not support the audio tag.
+  </audio>
+</td>
+</tr>
+</tbody>
+</table>
+<br />
+</div>
 </div>
 
 <div class="container shadow p-5 mb-5 bg-white rounded">
