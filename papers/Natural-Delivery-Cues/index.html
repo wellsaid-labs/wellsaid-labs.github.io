@@ -53,8 +53,8 @@
 <body>
   <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
     <div class="text-center">
-      <h1>[DRAFT] Annotations for Controllable Generative Models</h1>
-      <h4>Interpolable in-context annotations for crafting authentic vocal performances</h4>
+      <h1>Annotations for Controllable Generative Models</h1>
+      <h4> Crafting authentic vocal performances via interpolable in-context cues</h4>
       <h6 class="lead fw-bold">
         |<a href="https://wellsaid-labs.github.io/papers/Natural-Delivery-Cues"
           class="btn border-white bg-white fw-bold">Paper [TBD]</a>|
@@ -88,8 +88,8 @@
     <p style="text-align: center;">
     <figure class="text-center"><img src="Images/interpolable_model_diagram_sm.png" class="figure-img img-fluid rounded"
         alt="A diagram of a TTS model built using an annotation mapping network" width="800px">
-      <figcaption class="figure-caption">Image illustrates a Cues TTS model with an Annotation Mapping Network (AMN) for
-        controlling speech synthesis.</figcaption>
+      <figcaption class="figure-caption">Image illustrates a Cues TTS model with an Annotation Mapping Network (AMN) 
+        for controlling speech synthesis.</figcaption>
     </figure>
     </p>
 
@@ -101,13 +101,12 @@
       descriptions (i.e., prompts). However, many artistic preferences are nuanced and challenging to describe.
     </p>
     <p>
-      The method introduced in StyleGAN<a href="#note2" id="ref2" title="A Style-Based Generator Architecture for Generative Adversarial Networks;
-          arxiv link below"><sup
+      The method introduced in StyleGAN<a href="#note2" id="ref2" title="A Style-Based Generator Architecture for 
+      Generative Adversarial Networks; arxiv link below"><sup
           style="display: inline-block; border-bottom: 1px solid; padding-bottom: 6px">2</sup></a> and its related
-      models offers an
-      alternative approach. StyleGAN decouples the latent space, enabling precise manipulations that range from
-      high-level attributes to finer details.
-      These controls are not only precise and interpolable but are also interpretable and context-aware.
+      models offers an alternative approach. StyleGAN decouples the latent space, enabling precise manipulations that 
+      range from high-level attributes to finer details. These controls are not only precise and interpolable but are 
+      also interpretable and context-aware.
     </p>
     <p>
       Today, we announce a breakthrough in generative modeling for speech synthesis: natural delivery cues.
@@ -120,10 +119,11 @@
       and context-aware mechanism.
     </p>
     <p>
-      Initially, we studied loudness and tempo cues, addressing their historical challenges using
-      this framework. Our loudness cue not only adjusts decibel levels but also modulates timbre,
-      resulting in a more naturally sounding alteration. Our tempo cue avoids altering pitch,
-      addressing the complex inverse relationship between frequency and time.
+      Initially, we studied loudness and tempo cues, addressing their historical challenges using this framework. Where 
+      loudness controls traditionally vary decibel outputs, our loudness cue allows for a range of performances that vary 
+      in timbre, which is important for natural prosody. Similarly, our tempo cue does not modify pitch, addressing the 
+      complex inverse relationship between frequency and time. Both cue options, when applied individually or nested, 
+      allow for an expansive range of realistically synthesized expressive and performative audio.
     </p>
     <p>
       This general framework supports many types of cues. We will be releasing more soon. We include audio samples
