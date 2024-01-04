@@ -70,13 +70,13 @@
       <b>Abstract.</b>
       Despite recent progress in generative speech modeling, generating high-quality, diverse samples from complex
       datasets remains an elusive goal.
-      This work introduces a novel generative model combining state-of-the-art neural text-to-speech (TTS) and
+      This work introduces HINTS, a novel generative model architecture combining state-of-the-art neural text-to-speech (TTS) and
       contextual annotations.
       We learn a separate mapping network that accepts any manner of supervised annotations for controlling the
       generator, allowing for scale-specific
       modulation and interpolation operations such as loudness and tempo adjustments. Such a setup ensures that our
       annotations are consistent,
-      interpretable, and context-aware. Audio samples are available below. The model is available on <a
+      interpretable, and context-aware. Audio samples are available below. A beta model built on the HINTS architecture is available on <a
         href="https://wellsaidlabs.com/">wellsaidlabs.com</a>.
     </p>
   </div>
@@ -104,12 +104,13 @@
       The method introduced in StyleGAN<a href="#note2" id="ref2" title="A Style-Based Generator Architecture for 
       Generative Adversarial Networks; arxiv link below"><sup
           style="display: inline-block; border-bottom: 1px solid; padding-bottom: 6px">2</sup></a> and its related
-      models offers an alternative approach. StyleGAN decouples the latent space, enabling precise manipulations that 
+      models offers an alternative approach. StyleGAN decouples latent spaces, enabling precise manipulations that 
       range from high-level attributes to finer details. These controls are not only precise and interpolable but are 
       also interpretable and context-aware.
     </p>
     <p>
-      Today, we announce a breakthrough in generative modeling for speech synthesis: natural delivery cues.
+      Today, we announce a breakthrough in generative modeling for speech synthesis: HINTS (<b>H</b>ighly <b>I</b>ntuitive 
+      <b>N</b>aturally <b>T</b>ailored <b>S</b>peech).
     </p>
     <p>
       Our flagship text-to-speech model learns a separate mapping network that maps from contextual annotations (cues)
